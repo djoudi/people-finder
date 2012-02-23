@@ -1,0 +1,12 @@
+#summary What you should expect from build cycles
+
+= 1st Build Cycle =
+
+(Pictures have been removed for some strange reason)
+
+= 2nd Build Cycle =
+
+(Pictures have been removed for some strange reason)
+ * User should be able to login to application through facebook
+ * User should be able to add friends who can access the app
+ *
