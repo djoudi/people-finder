@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.ece3574.dausin"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="4" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:name=".activities.PeopleFinderActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:configChanges="keyboardHidden|orientation"
+           		  android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+        <activity android:name=".activities.AnimateMeActivity"
+        		  android:screenOrientation="portrait"
+        		  android:theme="@android:style/Theme.Black.NoTitleBar">
+        		<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".activities.LoginActivity"
+        		  android:screenOrientation="portrait"
+        		  android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+        		  
+
+    </application>
+</manifest>

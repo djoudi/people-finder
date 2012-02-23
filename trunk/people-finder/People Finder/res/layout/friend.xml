@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFFFF"
+    android:orientation="vertical" android:id="@+id/main">
+
+
+	<LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_alignLeft="@+id/profileSeperator">
+    	<ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/friendText"
+        android:src="@drawable/default_photo" android:layout_marginLeft="10dip" android:layout_marginTop="10dip">
+    	</ImageView>
+    	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:textColor="#800000" android:layout_marginLeft="10dip" android:layout_marginTop="12dp" android:id="@+id/profileName"></TextView>
+	</LinearLayout>
+    <LinearLayout android:id="@+id/addFriendLayout" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true">
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/friend_added" android:id="@+id/addFriendPicture" android:layout_marginLeft="72dip" android:layout_marginBottom="10dip"></ImageView>
+        <TextView android:layout_width="wrap_content" android:layout_marginLeft="10dip" android:textColor="#800000" android:text="Add a Friend" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:id="@+id/Test" android:layout_marginBottom="10dip"></TextView>
+    </LinearLayout>
+    <HorizontalScrollView android:id="@+id/friendsContainer" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@+id/linearLayout1" android:layout_alignParentRight="true" android:layout_marginTop="30dp">
+        <LinearLayout android:orientation="horizontal" android:layout_marginLeft="10dip" android:id="@+id/friendsLayout" android:layout_height="wrap_content" android:layout_width="284dp"></LinearLayout>
+    </HorizontalScrollView>
+    
+    <TextView android:background="#800000" android:text="sadf" android:layout_height="2dp" android:id="@+id/profileSeperator" android:layout_below="@+id/linearLayout1" android:layout_centerHorizontal="true" android:layout_marginTop="7dip" android:layout_width="fill_parent"></TextView>
+    <TextView android:background="#800000" android:layout_height="2dp" android:text="sadf" android:id="@+id/addFriendSeperator" android:layout_above="@+id/addFriendLayout" android:layout_alignParentLeft="true" android:layout_marginTop="7dip" android:layout_marginBottom="7dip" android:layout_width="fill_parent"></TextView>
+    
+
+    
+
+</RelativeLayout>
