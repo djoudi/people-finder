@@ -6,8 +6,8 @@
 
 = 2nd Build Cycle =
 
-(Pictures have been removed for some strange reason)
  * User should be able to login to application through facebook
  * User should be able to add friends who can access the app
  * User should be able to pull basic profile information from facebook
  * User should be able to pull information from friends who have authenticated app
+http://people-finder.googlecode.com/svn/trunk/US2.png
