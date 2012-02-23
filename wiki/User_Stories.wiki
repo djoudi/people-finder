@@ -2,7 +2,9 @@
 
 = 1st Build Cycle =
 
-(Pictures have been removed for some strange reason)
+ * User should see the startup animation
+ * User should be able to "login" to the application
+ * User can scroll through a dummy friend list
 
 = 2nd Build Cycle =
 
