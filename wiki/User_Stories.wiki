@@ -14,3 +14,12 @@ http://people-finder.googlecode.com/svn/trunk/US1.png
  * User should be able to pull basic profile information from facebook
  * User should be able to pull information from friends who have authenticated app
 http://people-finder.googlecode.com/svn/trunk/US2.png
+
+= 3rd Build Cycle =
+
+ * App Engine for storing GPS coordinates - Kyle
+ * Get the location data from GPS - Jake 
+ * Use text messages to send requests for finding - Jason
+      * Send and recieve texts, needs to have ID
+ * GPS throws information into app engine (same as get location)
+ * Needs to go onto a map (update every 30 secs) - Jacob
