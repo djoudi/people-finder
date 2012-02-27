@@ -23,3 +23,4 @@ http://people-finder.googlecode.com/svn/trunk/US2.png
  * Implement texting functionality - Jason
       * Send and recieve with ID info
  * Needs to go onto a map (update every 30 secs) - Jacob
+http://people-finder.googlecode.com/svn/trunk/US3.png
