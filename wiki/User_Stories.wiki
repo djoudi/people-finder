@@ -19,7 +19,7 @@ http://people-finder.googlecode.com/svn/trunk/US2.png
 
  * App Engine for storing GPS coordinates - Kyle
  * Get the location data from GPS - Jake 
- * Use text messages to send requests for finding - Jason
-      * Send and recieve texts, needs to have ID
- * GPS throws information into app engine (same as get location)
+      * Send the data to app engine
+ * Implement texting functionality - Jason
+      * Send and recieve with ID info
  * Needs to go onto a map (update every 30 secs) - Jacob
