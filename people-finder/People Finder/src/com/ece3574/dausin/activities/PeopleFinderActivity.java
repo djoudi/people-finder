@@ -142,7 +142,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	    
 	    addFriendLayout_.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				makeDialog(FRIEND_PRESS_ALERT, "");
 			}
@@ -180,7 +179,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			builder.setMessage("Short Press");
 			builder.setPositiveButton("Sweet", new DialogInterface.OnClickListener() {
 
-				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.cancel();
 					//Do Something Here.
@@ -190,7 +188,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			});
 			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.cancel();
 					//Do something else here.
@@ -207,7 +204,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			builder.setMessage("Long Press");
 			builder.setPositiveButton("Sweet", new DialogInterface.OnClickListener() {
 
-				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.cancel();
 					//Do Something Here.
@@ -217,7 +213,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			});
 			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					
 					dialog.cancel();
@@ -240,7 +235,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			}
 			builder.setItems(addFriendArray, new DialogInterface.OnClickListener() {
 
-				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					
 					makeToast(friends.get(which).name + " has been sent a request.");
@@ -262,7 +256,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	
     public class LinkUploadListener extends BaseRequestListener {
 
-    	@Override
 		public void onComplete(final String response, Object state) {
 			Log.d("Link", "Response: " + response.toString());
 			try {
@@ -287,7 +280,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     ///////////////////
     
     public class FriendRequestListener extends BaseRequestListener {
-    	@Override
     	public void onComplete(String response, Object state) {
     		try {
     			friends.clear();
@@ -417,7 +409,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		HttpUtils.get().doGet(url_, PeopleFinderActivity.this);
 	}
 
-	@Override
 	public void onResponse(HttpResponse resp) {
 		try {
 			appFriends.clear();
@@ -459,7 +450,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		
 	}
 
-	@Override
 	public void onError(Exception e) {
 		// TODO Auto-generated method stub
 		
@@ -515,11 +505,18 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     		
     	    URL img_value = null;
     	    try {
+    	    	
+    	    	// This is where the profile picture is on the web
+    	    	// -set id+"/picture?type=square"
+    	    	// 
+    	    	
 				img_value = new URL("http://graph.facebook.com/"+appFriends.get(i).id+"/picture?type=large");
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+    	    
+    	    	// This actually is the image that you use
     	    Bitmap mIcon1 = null;
 			try {
 				mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream());
@@ -553,7 +550,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			friendsLayout_.addView(appFriendLayout_);
 			appFriendLayout_.setOnClickListener(new OnClickListener() {
 
-				@Override
 				public void onClick(View v) {
 					String tag = v.getTag().toString();
 					//makeToast(tag + " pressed.");
@@ -563,7 +559,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			});
 			appFriendLayout_.setOnLongClickListener(new OnLongClickListener() {
 
-				@Override
 				public boolean onLongClick(View arg0) {
 					Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 					// Vibrate for 300 milliseconds

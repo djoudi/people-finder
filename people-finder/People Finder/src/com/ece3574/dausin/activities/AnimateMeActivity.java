@@ -8,11 +8,13 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+//import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.graphics.drawable.AnimationDrawable;
+//import android.view.animation.Animation.AnimationListener;
 //import android.view.MotionEvent;
 
-public class AnimateMeActivity extends Activity {
+public class AnimateMeActivity extends Activity{
     /** Called when the activity is first created. */
     
 	AnimationDrawable searchAnimation;
@@ -36,24 +38,43 @@ public class AnimateMeActivity extends Activity {
         MediaPlayer startSound = MediaPlayer.create(getApplicationContext(), R.raw.startup); 
         startSound.start();
         
+        
         findMe.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 	        	Intent i = new Intent(AnimateMeActivity.this, LoginActivity.class);
 	        	startActivity(i);
 			}
         	
         });
+        
+        /*findMe.setAnimationListener(new Animation.AnimationListener() {
+			
+			public void onAnimationStart(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void onAnimationEnd(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+		});*/
     }
 
 	
-	public void onWindowFocusChanged(boolean hasFocus) {
+	public void onWindowFocusChanged(boolean hasFocus){
 		if (hasFocus == true){
+			//setContentView(R.layout.animate);
 			searchAnimation.start();
 			loadAnimation.start();
-        	//Intent i = new Intent(AnimateMeActivity.this, LoginActivity.class);
-        	//startActivity(i);
+			
+			
 		}
 		return;
 	}

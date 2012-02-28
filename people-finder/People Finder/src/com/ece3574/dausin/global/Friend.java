@@ -7,7 +7,7 @@ public class Friend implements Comparable<Friend>{
 	public String name;
 	public String pictureURL;
 	public Bitmap pictureBitmap;
-	@Override
+
 	public int compareTo(Friend other) {
 		// TODO Auto-generated method stub
 		Friend otherFriend = other;
