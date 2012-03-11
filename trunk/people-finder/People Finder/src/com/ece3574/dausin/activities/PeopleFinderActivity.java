@@ -32,6 +32,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -182,7 +183,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.cancel();
 					//Do Something Here.
-					
+					Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
+		        	startActivity(i);
 				}
 				
 			});
