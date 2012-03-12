@@ -48,7 +48,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PeopleFinderActivity extends Activity implements HttpCallback{
+public class PeopleFinderActivity extends Activity implements HttpCallback, OnClickListener{
     /** Called when the activity is first created. */
 	
 	private HashMap<String, String> ParsedXML;
@@ -168,6 +168,16 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	//DIALOG BUILDER//
 	//////////////////
 	
+	private String findFriend(String tag){
+		for (int i=0; i< appFriends.size(); i++){
+			if(appFriends.get(i).id == tag)
+			{
+				return appFriends.get(i).phoneNumber;
+			}
+		}
+		return "";
+	}
+	
 	public void makeDialog(int type, String tag) {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -177,10 +187,14 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		switch(type){
 		case SHORT_PRESS_ALERT:
 			builder.setTitle(tag);
-			builder.setMessage("Short Press");
-			builder.setPositiveButton("Sweet", new DialogInterface.OnClickListener() {
+			builder.setMessage("Send request to search for this person?");
+			builder.setPositiveButton("yes", /*replace with peoplefinderactivity.this*/new DialogInterface.OnClickListener() {
 
-				public void onClick(DialogInterface dialog, int which) {
+////impliment this at the bottom
+				//replace with peapl.this
+				public void onClick(DialogInterface dialog, int which)  {
+					
+					findFriend(tag)
 					dialog.cancel();
 					//Do Something Here.
 					Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
@@ -548,7 +562,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			LinearLayout.LayoutParams plp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			plp.setMargins(10, 10, 10, 10);
 			appFriendLayout_.setLayoutParams(plp);
-			appFriendLayout_.setTag(name);
+			appFriendLayout_.setTag(appFriends.get(i).id);
 			friendsLayout_.addView(appFriendLayout_);
 			appFriendLayout_.setOnClickListener(new OnClickListener() {
 
@@ -593,6 +607,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 
 	}
 	
-	
+	public void onClick( );
     
 }
