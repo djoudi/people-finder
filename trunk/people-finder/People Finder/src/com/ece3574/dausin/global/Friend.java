@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 public class Friend implements Comparable<Friend>{
 	public String id;
 	public String name;
+	public String phoneNumber;
 	public String pictureURL;
 	public Bitmap pictureBitmap;
 
