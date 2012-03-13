@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ece3574.dausin.R;
+import com.ece3574.dausin.appengine.XMLParser;
 import com.ece3574.dausin.async.HttpUtils;
 import com.ece3574.dausin.async.HttpCallback;
 import com.ece3574.dausin.facebook.BaseRequestListener;
@@ -52,7 +54,7 @@ import android.widget.Toast;
 public class PeopleFinderActivity extends Activity implements HttpCallback{
     /** Called when the activity is first created. */
 	
-	private HashMap<String, String> ParsedXML;
+	private HashMap<String, String> putMap, ParsedXML;
 	private ImageView profilePhoto, addFriendPhoto;
     private ArrayList<Friend> friends = new ArrayList<Friend>();
     private static ArrayList<Friend> appFriends = new ArrayList<Friend>();
@@ -138,11 +140,11 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		    doFQLMultiquery();
 		    
 		}
-	    
+	    /*
 	    mAsyncRunner = new AsyncFacebookRunner(facebook);
 	    mAsyncRunner.request("me", new meRequestListener());
 	    mAsyncRunner.request("me/friends", new FriendRequestListener());
-	    
+	    */
 	    addFriendLayout_.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -385,6 +387,40 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
                 profileID = json.getString("id");
                 Globals.uid = profileID;
                 
+                profilePhoto.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View arg0) {
+						Map<String, String> args_ = new HashMap<String, String>();
+						args_.put("app", "hello");
+						args_.put("uid", Globals.uid);
+
+						HttpUtils.get().doPost("http://www.peoplefinderredevs.appspot.com/" + "uidpackagepairs", args_, new HttpCallback() {
+
+							@Override
+							public void onResponse(HttpResponse resp) {
+								// TODO Auto-generated method stub
+								try {
+									Log.i("GamesActivity", "Succesful post of " + "hello" + " " + HttpUtils.get().responseToString(resp));
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+
+							}
+
+							@Override
+							public void onError(Exception e) {
+								// TODO Auto-generated method stub
+
+							}
+
+						});
+						
+					}
+                	
+                });
+                
                 SharedPreferences.Editor editor = prefs_.edit();
                 editor.putString("profileid", profileID);
                 editor.commit();
@@ -470,6 +506,40 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			
 			appFriends = MyQsort.sortArrayList(appFriends);
 			makeToast("App Friends: " + appFriends.size());
+			
+			putMap = new HashMap<String, String>();
+			
+			for(int i=0; i<appFriends.size(); i++){
+				putMap.put("uid"+Integer.toString(i+1), appFriends.get(i).id);
+			}
+			
+			HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
+
+				@Override
+				public void onResponse(HttpResponse resp) {
+					
+					try {
+						String response = HttpUtils.get().responseToString(resp);
+						ParsedXML = XMLParser.parseUidPackagePairsXML(response);
+						Log.e("asdfasdf", response);
+						friendsLayout_.removeAllViews();
+						parseAppFriends();
+						//progressDialog.dismiss();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+
+				@Override
+				public void onError(Exception e) {
+					//Log.e("Appengine error", e.printStackTrace());
+					
+				}
+				
+			});
+			
 			tempFillContainer();
 
 			

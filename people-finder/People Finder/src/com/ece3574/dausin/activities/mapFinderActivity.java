@@ -40,7 +40,7 @@ public class mapFinderActivity extends MapActivity {
         // TODO Not working correctly fix it UP!!!
         Drawable drawable;
 		try {
-			drawable = drawableFromUrl(PeopleFinderActivity.getPracticeURL());
+			drawable = drawableFromUrl(PeopleFinderActivity.getPractice());
 	        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, this);
 	        
 	        GeoPoint point = new GeoPoint(19240000,-99120000);
