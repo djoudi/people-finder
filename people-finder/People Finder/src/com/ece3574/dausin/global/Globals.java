@@ -13,7 +13,7 @@ public class Globals {
 	public static int refreshGames = 0;
 	
 	public static final String packageUrl = "http://levelupredevs.appspot.com/packages";
-	public static final String uidPackagePairsUrl = "http://levelupredevs.appspot.com/uidpackagepairs";
+	public static final String uidPackagePairsUrl = "http://peoplefinderredevs.appspot.com/uidpackagepairs";
 	public static final String potentialPackageUrl = "http://levelupredevs.appspot.com/potentialpackages";
 	
 	public static int backgroundColor;
