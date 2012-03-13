@@ -54,7 +54,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback, OnCl
 	private HashMap<String, String> ParsedXML;
 	private ImageView profilePhoto, addFriendPhoto;
     private ArrayList<Friend> friends = new ArrayList<Friend>();
-    private ArrayList<Friend> appFriends = new ArrayList<Friend>();
+    private static ArrayList<Friend> appFriends = new ArrayList<Friend>();
     private LinearLayout friendsLayout_, addFriendLayout_;
     private String FILENAME = "PeopleFinder_data";
     private int MAX_HEIGHT = 100;
@@ -515,6 +515,12 @@ public class PeopleFinderActivity extends Activity implements HttpCallback, OnCl
 		}
 	}
 	
+        public static String getPractice(){
+          String testURL = null;
+          testURL = ("http://graph.facebook.com/"+appFriends.get(0).id+"/picture?type=square");
+          return testURL;
+  }
+   
     public void tempFillContainer() {
     	friendsLayout_.removeAllViews();
     	for(int i=0; i<appFriends.size(); i++) {
