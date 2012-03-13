@@ -510,7 +510,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			putMap = new HashMap<String, String>();
 			
 			for(int i=0; i<appFriends.size(); i++){
-				putMap.put("uid"+Integer.toString(i+1), appFriends.get(i).id);
+				//putMap.put("uid"+Integer.toString(i+1), appFriends.get(i).id);
+				putMap.put("uid"+Integer.toString(i+1), "680405878");
 			}
 			
 			HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
@@ -522,6 +523,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 						String response = HttpUtils.get().responseToString(resp);
 						ParsedXML = XMLParser.parseUidPackagePairsXML(response);
 						Log.e("asdfasdf", response);
+						makeToast(response);
 						//friendsLayout_.removeAllViews();
 						//parseAppFriends();
 						//progressDialog.dismiss();
