@@ -38,6 +38,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,7 +49,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PeopleFinderActivity extends Activity implements HttpCallback, OnClickListener{
+public class PeopleFinderActivity extends Activity implements HttpCallback{
     /** Called when the activity is first created. */
 	
 	private HashMap<String, String> ParsedXML;
@@ -69,6 +70,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback, OnCl
     private static final int SHORT_PRESS_ALERT = 1;
     private static final int LONG_PRESS_ALERT = 2;
     private static final int FRIEND_PRESS_ALERT = 3;
+    private static String currentTag;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -167,17 +169,24 @@ public class PeopleFinderActivity extends Activity implements HttpCallback, OnCl
 	//////////////////
 	//DIALOG BUILDER//
 	//////////////////
+	private  String makeMessage(){
+		if(Globals.uid != null){
+			return "PF:" + Globals.uid;
+		}
+		else {
+			return "";
+		}
+	}
 	
-	private String findFriend(String tag){
+	private String findFriend(){
 		for (int i=0; i< appFriends.size(); i++){
-			if(appFriends.get(i).id == tag)
+			if(appFriends.get(i).id == currentTag)
 			{
 				return appFriends.get(i).phoneNumber;
 			}
 		}
 		return "";
 	}
-	
 	public void makeDialog(int type, String tag) {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -190,15 +199,24 @@ public class PeopleFinderActivity extends Activity implements HttpCallback, OnCl
 			builder.setMessage("Send request to search for this person?");
 			builder.setPositiveButton("yes", /*replace with peoplefinderactivity.this*/new DialogInterface.OnClickListener() {
 
-////impliment this at the bottom
+////implement this at the bottom
 				//replace with peapl.this
 				public void onClick(DialogInterface dialog, int which)  {
 					
-					findFriend(tag)
+					String phoneNo = findFriend();
+					String requestMessage = makeMessage(); //
+					
+					if (phoneNo != "" && requestMessage != ""){
+						sendMapRequest(phoneNo, requestMessage);
+					}
 					dialog.cancel();
 					//Do Something Here.
 					Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
 		        	startActivity(i);
+				}
+				private void sendMapRequest(String phone, String message) {
+					SmsManager sms = SmsManager.getDefault();
+					sms.sendTextMessage(phone, null, message, null, null);
 				}
 				
 			});
@@ -574,6 +592,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback, OnCl
 
 				public void onClick(View v) {
 					String tag = v.getTag().toString();
+					currentTag = tag;
 					//makeToast(tag + " pressed.");
 					makeDialog(SHORT_PRESS_ALERT, tag);
 				}
@@ -586,6 +605,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback, OnCl
 					// Vibrate for 300 milliseconds
 					v.vibrate(50);
 					String tag = arg0.getTag().toString();
+					currentTag = tag;
 					//makeToast(tag + " long pressed.");
 					makeDialog(LONG_PRESS_ALERT, tag);
 					return true;
@@ -612,7 +632,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback, OnCl
 				mAsyncRunner.request(friends.get(num).id + "/feed", params, "POST", new LinkUploadListener(), null);
 
 	}
-	
-	public void onClick( );
-    
+
+
+
+
 }
