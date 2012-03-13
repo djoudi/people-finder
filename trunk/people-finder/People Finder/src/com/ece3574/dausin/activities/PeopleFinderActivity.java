@@ -522,8 +522,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 						String response = HttpUtils.get().responseToString(resp);
 						ParsedXML = XMLParser.parseUidPackagePairsXML(response);
 						Log.e("asdfasdf", response);
-						friendsLayout_.removeAllViews();
-						parseAppFriends();
+						//friendsLayout_.removeAllViews();
+						//parseAppFriends();
 						//progressDialog.dismiss();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -647,6 +647,14 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     	    appFriendLayout_.addView(photo);
 			TextView t = new TextView(getBaseContext());
 			t.setText(name);
+			/*
+			if(!ParsedXML.get(appFriends.get(i).id).equals("")){
+				t.setText(appFriends.get(i).name + " - " + ParsedXML.get(appFriends.get(i).id));
+			}
+			else {
+				t.setText(appFriends.get(i).name);
+			}
+			*/
 			t.setTextColor(0xFF800000);
 			t.setTextSize(18);
 			LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
