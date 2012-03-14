@@ -33,34 +33,7 @@ public class ReceiveSMS extends BroadcastReceiver
 	            //---display the new SMS message---
 	            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
 	        }
-	/*
-	            //--make a dialog to let the user know they got a text
-                //Create alert dialog
-                AlertDialog alert;
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-                alertBuilder.setTitle("Request");
  
-                //Give Alert Dialog custom view and create close button
-                alertBuilder.setMessage("You just got a map request from another user!");
- 
-                //Create positive button
-                alertBuilder.setPositiveButton("I accept", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                       // Toast.makeText(context, "accepted", Toast.LENGTH_LONG).show();
-                    }
-                });
- 
-                //Create negative button
-                alertBuilder.setNegativeButton("Ignore ", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //Toast.makeText(PeopleFinderActivity.this, "Ignored", Toast.LENGTH_LONG).show();
-                    }
-                });
- 
-                //Display alert dialog
-                alert = alertBuilder.create();
-                alert.show();
-                */
 	        }                         
 	    
 	}
