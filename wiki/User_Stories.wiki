@@ -17,10 +17,12 @@ http://people-finder.googlecode.com/svn/trunk/US2.png
 
 = 3rd Build Cycle =
 
- * App Engine for storing GPS coordinates - Kyle
- * Get the location data from GPS - Jake 
-      * Send the data to app engine
- * Implement texting functionality - Jason
+ * User can send a request to find another app-user on the map. The other user will then be able to accept or deny that request. - Jason
+      * Implement texting functionality 
       * Send and recieve with ID info
- * Needs to go onto a map (update every 30 secs) - Jacob
+ * User will be able to see the requested person on the map 
+      *See the other person on the map - Jacob
+      *Get the location data from GPS - Jake
+      *App Engine for storing GPS coordinates - Kyle
+
 http://people-finder.googlecode.com/svn/trunk/US3.png
