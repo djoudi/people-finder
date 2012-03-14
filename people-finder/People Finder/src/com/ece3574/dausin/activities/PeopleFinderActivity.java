@@ -74,7 +74,9 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     private static final int SHORT_PRESS_ALERT = 1;
     private static final int LONG_PRESS_ALERT = 2;
     private static final int FRIEND_PRESS_ALERT = 3;
+    private static final int MAP_REQUEST_ALERT = 4;
     private static String currentTag;
+    public static int ReceiveRequestFlag;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -201,7 +203,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	
 	public void makeDialog(int type, String tag) {
 		
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(PeopleFinderActivity.this);
 		AlertDialog dialog;
 		
 		
@@ -209,10 +211,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		case SHORT_PRESS_ALERT:
 			builder.setTitle(tag);
 			builder.setMessage("Send request to search for this person?");
-			builder.setPositiveButton("yes", /*replace with peoplefinderactivity.this*/new DialogInterface.OnClickListener() {
+			builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
 
-////implement this at the bottom
-				//replace with peapl.this
 				public void onClick(DialogInterface dialog, int which)  {
 					
 					String phoneNo = findFriend();
@@ -286,6 +286,32 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					makeToast(friends.get(which).name + " has been sent a request.");
 					sendFriendRequest(which);
 					
+				}
+				
+			});
+			
+			dialog = builder.create();
+			dialog.show();
+			break;
+		case MAP_REQUEST_ALERT:
+			builder.setTitle(tag);
+			builder.setMessage("You just got a map request from another user!");
+			builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+
+				public void onClick(DialogInterface dialog, int which)  {
+					
+					//String phoneNo = findFriend();
+					//String requestMessage = makeMessage(); //
+					
+					//send text message back to accept the request
+				}
+			});
+			
+			builder.setNegativeButton("Ignore", new DialogInterface.OnClickListener() {
+
+				public void onClick(DialogInterface dialog, int which) {
+					//send text back to say you ignore
+					dialog.cancel();
 				}
 				
 			});
@@ -722,62 +748,11 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 				mAsyncRunner.request(friends.get(num).id + "/feed", params, "POST", new LinkUploadListener(), null);
 
 	}
-	
-	/*public class ReceiveSMS extends BroadcastReceiver
-	{
-	    @Override
-	    public void onReceive(Context context, Intent intent) 
-	    {
-	        //---get the SMS message passed in---
-	        Bundle bundle = intent.getExtras();        
-	        SmsMessage[] msgs = null;
-	        String str = "";            
-	        if (bundle != null)
-	        {
-	            //---retrieve the SMS message received---
-	            Object[] pdus = (Object[]) bundle.get("pdus");
-	            msgs = new SmsMessage[pdus.length];            
-	            for (int i=0; i<msgs.length; i++){
-	                msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);                
-	                str += "SMS from " + msgs[i].getOriginatingAddress();                     
-	                str += " :";
-	                str += msgs[i].getMessageBody().toString();
-	                str += "\n";        
-	            }
-	            //---display the new SMS message---
-	            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-	            
-	            //--make a dialog to let the user know they got a text
-                //Create alert dialog
-                AlertDialog alert;
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PeopleFinderActivity.this);
-                alertBuilder.setTitle("Request");
- 
-                //Give Alert Dialog custom view and create close button
-                alertBuilder.setMessage("You just got a map request from another user!");
- 
-                //Create positive button
-                alertBuilder.setPositiveButton("I accept", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        Toast.makeText(PeopleFinderActivity.this, "accepted", Toast.LENGTH_LONG).show();
-                    }
-                });
- 
-                //Create negative button
-                alertBuilder.setNegativeButton("Ignore ", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        Toast.makeText(PeopleFinderActivity.this, "Ignored", Toast.LENGTH_LONG).show();
-                    }
-                });
- 
-                //Display alert dialog
-                alert = alertBuilder.create();
-                alert.show();
-	        }                         
-	    }
-	}
-*/
 
 
+
+//	public static void requestMapDialog(int Type, String str) {
+		//
+//	}
 
 }
