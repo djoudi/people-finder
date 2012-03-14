@@ -13,9 +13,7 @@ import com.ece3574.dausin.activities.PeopleFinderActivity;
 public class ReceiveSMS extends BroadcastReceiver
 	{
 	
-	private int MAP_REQUEST_ALERT = 4;
-
-	    @Override
+	@Override
 	    public void onReceive(Context context, Intent intent) 
 	    {
 	        //---get the SMS message passed in---
@@ -36,7 +34,6 @@ public class ReceiveSMS extends BroadcastReceiver
 	            }
 	            //---display the new SMS message---
 	            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-	            PeopleFinderActivity.requestMapDialog(MAP_REQUEST_ALERT, "Request");
 	        }
  
 	    }                         
