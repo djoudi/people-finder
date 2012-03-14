@@ -8,9 +8,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
+import com.ece3574.dausin.activities.PeopleFinderActivity;
 
 public class ReceiveSMS extends BroadcastReceiver
 	{
+	
+	private int MAP_REQUEST_ALERT = 4;
+
 	    @Override
 	    public void onReceive(Context context, Intent intent) 
 	    {
@@ -32,9 +36,10 @@ public class ReceiveSMS extends BroadcastReceiver
 	            }
 	            //---display the new SMS message---
 	            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+	            PeopleFinderActivity.requestMapDialog(MAP_REQUEST_ALERT, "Request");
 	        }
  
-	        }                         
+	    }                         
 	    
 	}
 	 
