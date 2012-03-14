@@ -391,7 +391,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
                 
                 profilePhoto.setOnClickListener(new OnClickListener(){
 
-					@Override
+					@Override//hashmap  key is app, value is hello (later going to be string)
 					public void onClick(View arg0) {
 						Map<String, String> args_ = new HashMap<String, String>();
 						args_.put("app", "hello");
@@ -402,7 +402,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 							@Override
 							public void onResponse(HttpResponse resp) {
 								// TODO Auto-generated method stub
-								try {
+								try {											//change hello to gps string
 									Log.i("GamesActivity", "Succesful post of " + "hello" + " " + HttpUtils.get().responseToString(resp));
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
