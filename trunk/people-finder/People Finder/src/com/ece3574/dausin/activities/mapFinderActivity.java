@@ -16,14 +16,27 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class mapFinderActivity extends MapActivity {
     /** Called when the activity is first created. */
+	
+	//Added for Jake's functions
+	private Handler handler = new Handler();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +65,14 @@ public class mapFinderActivity extends MapActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		//Jake's added onCreate method
+        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        LocationListener mlocListener = new DifferentLocationListener();
+        //mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 30000, 0, mlocListener);
+        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 1, 1, mlocListener);
+        //end Jake's added onCreate
+		
     }
     
     /* Function to convert URL images to drawables */
@@ -72,4 +93,48 @@ public class mapFinderActivity extends MapActivity {
     protected boolean isRouteDisplayed(){
     	return false;
     }
+    
+	public class DifferentLocationListener implements LocationListener {
+		
+		//@Override
+		public void onLocationChanged(final Location loc){
+			Log.e("Location Loc", "default message");
+			handler.post(new Runnable() {
+				
+				@Override
+				public void run() {
+			
+					loc.getLatitude();
+					loc.getLongitude();
+					String Text = "Latitude: " + loc.getLatitude() + "  Longitude: " + loc.getLongitude();
+					makeToast(Text);
+				}
+			});
+
+		}
+		
+		@Override
+		public void onProviderDisabled(String provider) {
+			Toast.makeText( getApplicationContext(), "GPS Disabled", Toast.LENGTH_SHORT).show();
+		
+		}
+		
+		@Override
+		public void onProviderEnabled(String provider) {
+			Toast.makeText( getApplicationContext(), "GPS Enabled", Toast.LENGTH_SHORT).show();
+		}
+		
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			
+		}
+		
+		
+		
+	}/* End of Class MyLocationListener */
+	
+	public void makeToast(String str) {
+		Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+	}
+
 }
