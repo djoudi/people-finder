@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-//import java.util.ArrayList;
 import java.util.List;
 
 import com.ece3574.dausin.R;
-//import com.ece3574.dausin.global.Friend;
 import com.ece3574.dausin.maps.TheItemizedOverlay;
 
 import com.google.android.maps.GeoPoint;
@@ -17,19 +15,17 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-import android.app.Activity;
-import android.content.Context;
+//import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
+//import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class mapFinderActivity extends MapActivity {
@@ -67,10 +63,10 @@ public class mapFinderActivity extends MapActivity {
 		}
 		
 		//Jake's added onCreate method
-        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        LocationListener mlocListener = new DifferentLocationListener();
+		//LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        //LocationListener mlocListener = new DifferentLocationListener();
         //mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 30000, 0, mlocListener);
-        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 1, 1, mlocListener);
+        //mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 1, 1, mlocListener);
         //end Jake's added onCreate
 		
     }
@@ -101,7 +97,6 @@ public class mapFinderActivity extends MapActivity {
 			Log.e("Location Loc", "default message");
 			handler.post(new Runnable() {
 				
-				@Override
 				public void run() {
 			
 					loc.getLatitude();
@@ -113,18 +108,15 @@ public class mapFinderActivity extends MapActivity {
 
 		}
 		
-		@Override
 		public void onProviderDisabled(String provider) {
 			Toast.makeText( getApplicationContext(), "GPS Disabled", Toast.LENGTH_SHORT).show();
 		
 		}
 		
-		@Override
 		public void onProviderEnabled(String provider) {
 			Toast.makeText( getApplicationContext(), "GPS Enabled", Toast.LENGTH_SHORT).show();
 		}
 		
-		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 			
 		}
