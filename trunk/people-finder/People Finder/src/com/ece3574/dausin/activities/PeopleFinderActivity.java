@@ -188,14 +188,16 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		for (int i=0; i< appFriends.size(); i++){
 			if(appFriends.get(i).id == currentTag)
 			{
+
 				String temp = appFriends.get(i).phoneNumber;
 				if(temp == null)
 				{
-					return "5556";
+					return "5554";
 				}
 				else{
-				return appFriends.get(i).phoneNumber;
+					return appFriends.get(i).phoneNumber;
 				}
+				
 			}
 		}
 		return "";
@@ -211,6 +213,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		case SHORT_PRESS_ALERT:
 			builder.setTitle(tag);
 			builder.setMessage("Send request to search for this person?");
+
 			builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which)  {
@@ -223,8 +226,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					}
 					dialog.cancel();
 					//Do Something Here.
-					Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
-		        	startActivity(i);
+					//Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
+		        	//startActivity(i);
 				}
 				private void sendMapRequest(String phone, String message) {
 					SmsManager sms = SmsManager.getDefault();
