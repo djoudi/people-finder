@@ -490,6 +490,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
                     	}
                         if(firstTime_ == true){
                         	doFQLMultiquery();
+                        	pDialog_.dismiss();
                         }
                     }
                 });
