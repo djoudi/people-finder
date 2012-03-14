@@ -186,11 +186,19 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		for (int i=0; i< appFriends.size(); i++){
 			if(appFriends.get(i).id == currentTag)
 			{
+				String temp = appFriends.get(i).phoneNumber;
+				if(temp == null)
+				{
+					return "5556";
+				}
+				else{
 				return appFriends.get(i).phoneNumber;
+				}
 			}
 		}
 		return "";
 	}
+	
 	public void makeDialog(int type, String tag) {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -715,7 +723,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 
 	}
 	
-	public class ReceiveSMS extends BroadcastReceiver
+	/*public class ReceiveSMS extends BroadcastReceiver
 	{
 	    @Override
 	    public void onReceive(Context context, Intent intent) 
@@ -749,16 +757,16 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
                 alertBuilder.setMessage("You just got a map request from another user!");
  
                 //Create positive button
-                alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                alertBuilder.setPositiveButton("I accept", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        Toast.makeText(PeopleFinderActivity.this, "I accept!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PeopleFinderActivity.this, "accepted", Toast.LENGTH_LONG).show();
                     }
                 });
  
                 //Create negative button
-                alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                alertBuilder.setNegativeButton("Ignore ", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        Toast.makeText(PeopleFinderActivity.this, "Cancel!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PeopleFinderActivity.this, "Ignored", Toast.LENGTH_LONG).show();
                     }
                 });
  
@@ -768,7 +776,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	        }                         
 	    }
 	}
-
+*/
 
 
 
