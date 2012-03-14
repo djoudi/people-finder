@@ -226,8 +226,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					}
 					dialog.cancel();
 					//Do Something Here.
-					//Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
-		        	//startActivity(i);
+					Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
+		        	startActivity(i);
 				}
 				private void sendMapRequest(String phone, String message) {
 					SmsManager sms = SmsManager.getDefault();
@@ -428,7 +428,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
                 
                 profilePhoto.setOnClickListener(new OnClickListener(){
 
-					@Override//hashmap  key is app, value is hello (later going to be string)
+					//hashmap  key is app, value is hello (later going to be string)
 					public void onClick(View arg0) {
 						Map<String, String> args_ = new HashMap<String, String>();
 						args_.put("app", "hello");
@@ -436,7 +436,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 
 						HttpUtils.get().doPost("http://www.peoplefinderredevs.appspot.com/" + "uidpackagepairs", args_, new HttpCallback() {
 
-							@Override
 							public void onResponse(HttpResponse resp) {
 								// TODO Auto-generated method stub
 								try {											//change hello to gps string
@@ -448,7 +447,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 
 							}
 
-							@Override
 							public void onError(Exception e) {
 								// TODO Auto-generated method stub
 
@@ -556,7 +554,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			
 			HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
 
-				@Override
 				public void onResponse(HttpResponse resp) {
 					
 					try {
@@ -574,7 +571,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					
 				}
 
-				@Override
 				public void onError(Exception e) {
 					//Log.e("Appengine error", e.printStackTrace());
 					
