@@ -306,11 +306,17 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(PeopleFinderActivity.this);
 		AlertDialog dialog;
+		String name = "";
+		for(Friend f : appFriends){
+			if(f.id.equals(tag)){
+				name = f.name;
+			}
+		}
 		
 		
 		switch(type){
 		case SHORT_PRESS_ALERT:
-			builder.setTitle(tag);
+			builder.setTitle(name);
 			builder.setMessage("Send request to search for this person?");
 
 			builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
