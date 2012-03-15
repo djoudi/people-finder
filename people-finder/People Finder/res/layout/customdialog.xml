@@ -4,6 +4,13 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/dialogHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter a Phone Number"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textView1"
@@ -14,6 +21,14 @@
         android:id="@+id/txtPhoneNo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/acceptNumberButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:text="Okay" />
+
               />
 
 </LinearLayout>
