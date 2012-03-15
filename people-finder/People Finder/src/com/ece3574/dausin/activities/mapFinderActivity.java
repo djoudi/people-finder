@@ -30,6 +30,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -48,6 +49,7 @@ public class mapFinderActivity extends MapActivity {
 	private HashMap<String, String> putMap, ParsedXML;
 	private String putId, theirGPS, theirLat, theirLong;
 	private int theirLatInt, theirLongInt;
+	private String provider;
 	
 	public static final int MICRO_DEGREE = 100000;
 	
@@ -84,6 +86,21 @@ public class mapFinderActivity extends MapActivity {
         LocationListener mlocListener = new DifferentLocationListener();
         mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 30000, 0, mlocListener); //checks ofr updates every 30 seconds
         //end Jake's added onCreate
+        
+        Criteria criteria = new Criteria();
+		provider = mlocManager.getBestProvider(criteria, false);
+		Location location = mlocManager.getLastKnownLocation(provider);
+
+		// Initialize the location fields
+		if (location != null) {
+			System.out.println("Provider " + provider + " has been selected.");
+			double lat = location.getLatitude();
+			double lng = location.getLongitude();
+			lat = lat * MICRO_DEGREE;
+			lng = lng * MICRO_DEGREE;
+		} else {
+			
+		}
 		
     }
     
@@ -191,6 +208,7 @@ public class mapFinderActivity extends MapActivity {
 								int index = theirGPS.indexOf("|");
 								theirLat = theirGPS.substring(0, index);
 								theirLong = theirGPS.substring(index+1, theirGPS.length());
+								makeToast(theirLat + " " + theirLong);
 								theirLatInt = Integer.valueOf(theirLat) * MICRO_DEGREE;
 								theirLongInt = Integer.valueOf(theirLong) * MICRO_DEGREE;
 								
