@@ -200,7 +200,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		                               (ViewGroup) findViewById(R.id.layout_root));
 
 		final TextView text = (TextView) layout.findViewById(R.id.textView1);
-		text.setText("Phone number not found, please enter your facebook friends number:");
+		text.setText("This person's phone number was not found, please enter your facebook friends number:");
 
 		final EditText edit = (EditText) layout.findViewById(R.id.txtPhoneNo);
 		//String fone = edit.getText().toString();
@@ -215,6 +215,9 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	            
 	            SmsManager sms = SmsManager.getDefault();
 				sms.sendTextMessage(fone, null, requestMessage, null, null);
+				
+				Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
+	        	startActivity(i);
 	            
 	        } 
 	        }); 
@@ -320,8 +323,9 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					
 					//dialog.cancel();
 					//Do Something Here.
-					Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
-		        	startActivity(i);
+					
+					//Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
+		        	//startActivity(i);
 				}
 				//private void sendMapRequest(String phone, String message) {
 				//	SmsManager sms = SmsManager.getDefault();
