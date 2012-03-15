@@ -10,8 +10,6 @@ Once you've added Kyle, authenticate by pressing the "Login through Facebook" bu
 
 Friends Activity:  The initial first time set up is a little longer than the subsequent setups.  A progress dialog will open and eventually close.  A number of toasts will show up, these are used for debugging purposes and can be ignored.
 
-KNOWN BUG:  Sometimes, the friends will be parsed through twice and result in a force close.  If this happens, just restart the app.
-
 After the progress dialog goes away, your basic information(name / photo) will show up on the top of the screen.  Any friends you have (Like Kyle) that have accepted the apps permissions will show up with some of the same information.  They are short and long clickable, with each opening up a special dialog.
 
 Lastly, pressing "Add a friend" will bring up a list of all of your friends.  Press it, scroll down to "Kyle Shea Dausin", and select him.  If you go to his page on facebook, you will see a wall post with some dummy information about the app.
@@ -20,9 +18,11 @@ Lastly, pressing "Add a friend" will bring up a list of all of your friends.  Pr
 
 = *Build Cycle Three Notes:* =
 
-- when your friends list is populated click a person with a short press, this will bring up a dialog to ask if you want to request a map with that person on it.
+- This build cycle requires that you and another team member are both facebook friends and you have both installed the People Finder app and accepted the app's permissions when logging in through facebook.
 
-- if you send the request the app will try to find that friends phone number, if it doesn't have it stored, it will prompt you for that facebook friend's number.
+- when your friends list is populated click a person (This should be the teammate who is also running the app) with a short press, this will bring up a dialog to ask if you want to request a map with that person on it.
+
+- if you send the request the app will try to find that friends phone number, if it doesn't have it stored, it will prompt you for that facebook friend's number.  We have not yet added code for error-checking what you input, so be careful. :P
 
 - upon sending the request the sending app will go to the map dialog and display you on the map
 
