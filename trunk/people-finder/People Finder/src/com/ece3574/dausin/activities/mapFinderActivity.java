@@ -121,10 +121,12 @@ public class mapFinderActivity extends MapActivity {
 					
 					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
 					Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
-					//pushing text string
 					
+					///////////////////////////
+					//PUSHING STRING
+					///////////////////////////
 					Map<String, String> args_ = new HashMap<String, String>();
-					args_.put("app", coordinates);
+					args_.put("app", coordinates); //posts coordinates to app
 					args_.put("uid", Globals.uid);
 
 					HttpUtils.get().doPost("http://www.peoplefinderredevs.appspot.com/" + "uidpackagepairs", args_, new HttpCallback() {
@@ -148,22 +150,38 @@ public class mapFinderActivity extends MapActivity {
 					});
 					
 					
-					//pulling string
-					/*
-					putMap = new HashMap<String, String>();
+					////////////////////////////
+					// PULLING STRING
+					////////////////////////////
+					
+					//the account that we are recieving from should be the facebook in the
+					//PeopleFinderActivity.currentTag string
+					//so then based on
+					//putMap was changed to static in PeopleFinderActivity to access it here.
+					//app friends was made public to be used in here
+					
+					String accountName = PeopleFinderActivity.currentTag; //since apparently we change currentTag below
+					PeopleFinderActivity.putMap = new HashMap<String, String>();
 					
 					PeopleFinderActivity.currentTag = "the";
-					putMap.put("uid"+Integer.toString(i+1), "680405878");
+					int i = 0;
+					while( i<PeopleFinderActivity.appFriends.size()){
+						PeopleFinderActivity.putMap.put("uid"+Integer.toString(i+1), PeopleFinderActivity.appFriends.get(i).id);
+						++i;
+					}
+					PeopleFinderActivity.putMap.put("uid"+Integer.toString(i+1), accountName);
 
 					
-					HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
+					HttpUtils.get().doPut(Globals.uidPackagePairsUrl, PeopleFinderActivity.putMap, new HttpCallback(){
 
 						public void onResponse(HttpResponse resp) {
 							
 							try {
+								
+								//ParsedXML has also been changed to become static
 								String response = HttpUtils.get().responseToString(resp);
-								ParsedXML = XMLParser.parseUidPackagePairsXML(response);
-								Log.e("asdfasdf", response);
+								PeopleFinderActivity.ParsedXML = XMLParser.parseUidPackagePairsXML(response); //ParsedXML should now have both strings
+								Log.e("Test Message", response);
 								makeToast(response);
 								//friendsLayout_.removeAllViews();
 								//parseAppFriends();
@@ -181,10 +199,11 @@ public class mapFinderActivity extends MapActivity {
 						}
 						
 					});
-					 */
-					//end push
-					
-					//now we need to pull a text string
+					 
+					/////////////////////////////
+					//End Pull String. It should exist in XML Parser. I dont' understand how to access it though.
+					//How do we set something like String coordinatesRecieved  = ParsedXML<I_DONT_CARE, coordinates_I_Want>
+					/////////////////////////////
 					
 					
 				}
