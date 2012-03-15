@@ -64,7 +64,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	private HashMap<String, String> putMap, ParsedXML;
 	private ImageView profilePhoto, addFriendPhoto;
     private ArrayList<Friend> friends = new ArrayList<Friend>();
-    private static ArrayList<Friend> appFriends = new ArrayList<Friend>();
+    static ArrayList<Friend> appFriends = new ArrayList<Friend>();
     private LinearLayout friendsLayout_, addFriendLayout_;
     private String FILENAME = "PeopleFinder_data";
     private int MAX_HEIGHT = 100;
@@ -82,7 +82,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     private static final int MAP_REQUEST_ALERT = 4;
     String numberFromCDialog;
     static int breakCustomLoop = 0;
-    private static String currentTag;
+    static String currentTag;
     public static int ReceiveRequestFlag;
 	
     @Override
@@ -179,9 +179,10 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
 	}
 	
-	//////////////////
-	//DIALOG BUILDER//
-	//////////////////
+	//////////////////////
+	//TEXT MESSAGE STUFF//
+	//////////////////////
+	
 	private  String makeMessage(){
 		if(Globals.uid != null){
 			return "PF:" + Globals.uid;
@@ -295,6 +296,11 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		//numberFromCDialog = "";
 		//return;
 	}
+	
+	
+	//////////////////
+	//DIALOG BUILDER//
+	//////////////////
 	
 	public void makeDialog(int type, String tag) {
 		
@@ -528,6 +534,11 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 
 					//hashmap  key is app, value is hello (later going to be string)
 					public void onClick(View arg0) {
+						
+						
+						Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
+						startActivity(i);
+						/*
 						Map<String, String> args_ = new HashMap<String, String>();
 						args_.put("app", "hello");
 						args_.put("uid", Globals.uid);
@@ -551,6 +562,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 							}
 
 						});
+						*/
 						
 					}
                 	

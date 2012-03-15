@@ -45,6 +45,7 @@ public class mapFinderActivity extends MapActivity {
 	
 	//Added for Jake's functions
 	private Handler handler = new Handler();
+	private HashMap<String, String> putMap, ParsedXML;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -161,18 +162,19 @@ public class mapFinderActivity extends MapActivity {
 					//app friends was made public to be used in here
 					
 					String accountName = PeopleFinderActivity.currentTag; //since apparently we change currentTag below
-					PeopleFinderActivity.putMap = new HashMap<String, String>();
+					putMap = new HashMap<String, String>();
 					
 					PeopleFinderActivity.currentTag = "the";
 					int i = 0;
 					while( i<PeopleFinderActivity.appFriends.size()){
-						PeopleFinderActivity.putMap.put("uid"+Integer.toString(i+1), PeopleFinderActivity.appFriends.get(i).id);
+						putMap.put("uid"+Integer.toString(i+1), PeopleFinderActivity.appFriends.get(i).id);
 						++i;
 					}
-					PeopleFinderActivity.putMap.put("uid"+Integer.toString(i+1), accountName);
+					
+					putMap.put("uid"+Integer.toString(i+1), accountName);
 
 					
-					HttpUtils.get().doPut(Globals.uidPackagePairsUrl, PeopleFinderActivity.putMap, new HttpCallback(){
+					HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
 
 						public void onResponse(HttpResponse resp) {
 							
@@ -180,7 +182,7 @@ public class mapFinderActivity extends MapActivity {
 								
 								//ParsedXML has also been changed to become static
 								String response = HttpUtils.get().responseToString(resp);
-								PeopleFinderActivity.ParsedXML = XMLParser.parseUidPackagePairsXML(response); //ParsedXML should now have both strings
+								ParsedXML = XMLParser.parseUidPackagePairsXML(response); //ParsedXML should now have both strings
 								Log.e("Test Message", response);
 								makeToast(response);
 								//friendsLayout_.removeAllViews();
