@@ -1,4 +1,4 @@
-Build Cycle Two Steps:
+=*Build Cycle Two Steps:*=
 
 Installing the APK:  use adb to isntall the provided apk to your emulator or put the apk on your phone's sd card and use an app like Astro File Manager to install it.
 
@@ -18,7 +18,7 @@ Lastly, pressing "Add a friend" will bring up a list of all of your friends.  Pr
 
 
 
-Build Cycle Three Notes:
+= *Build Cycle Three Notes:* =
 
 - when your friends list is populated click a person with a short press, this will bring up a dialog to ask if you want to request a map with that person on it.
 
