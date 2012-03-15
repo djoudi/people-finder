@@ -15,3 +15,15 @@ KNOWN BUG:  Sometimes, the friends will be parsed through twice and result in a 
 After the progress dialog goes away, your basic information(name / photo) will show up on the top of the screen.  Any friends you have (Like Kyle) that have accepted the apps permissions will show up with some of the same information.  They are short and long clickable, with each opening up a special dialog.
 
 Lastly, pressing "Add a friend" will bring up a list of all of your friends.  Press it, scroll down to "Kyle Shea Dausin", and select him.  If you go to his page on facebook, you will see a wall post with some dummy information about the app.
+
+
+
+Build Cycle Three Notes:
+
+- when your friends list is populated click a person with a short press, this will bring up a dialog to ask if you want to request a map with that person on it.
+
+- if you send the request the app will try to find that friends phone number, if it doesn't have it stored, it will prompt you for that facebook friend's number.
+
+- upon sending the request the sending app will go to the map dialog and display you on the map
+
+- the receiving app, after receiving the request, will get a toast saying that in the next build cycle the app receiver will be able to accept or deny the request -- if accepted the receiving app will go to the map dialog and place both people on it, and if denied nothing will happen
