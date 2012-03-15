@@ -4,9 +4,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.http.HttpResponse;
 
 import com.ece3574.dausin.R;
+import com.ece3574.dausin.async.HttpCallback;
+import com.ece3574.dausin.async.HttpUtils;
+import com.ece3574.dausin.facebook.BaseRequestListener;
+import com.ece3574.dausin.global.Globals;
 import com.ece3574.dausin.maps.TheItemizedOverlay;
 
 import com.google.android.maps.GeoPoint;
@@ -16,17 +24,20 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 //import android.content.Context;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 //import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
+import com.ece3574.dausin.async.HttpUtils;
 
 public class mapFinderActivity extends MapActivity {
     /** Called when the activity is first created. */
@@ -63,10 +74,9 @@ public class mapFinderActivity extends MapActivity {
 		}
 		
 		//Jake's added onCreate method
-		//LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        //LocationListener mlocListener = new DifferentLocationListener();
-        //mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 30000, 0, mlocListener);
-        //mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 1, 1, mlocListener);
+		LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        LocationListener mlocListener = new DifferentLocationListener();
+        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 30000, 0, mlocListener); //checks ofr updates every 30 seconds
         //end Jake's added onCreate
 		
     }
@@ -90,21 +100,61 @@ public class mapFinderActivity extends MapActivity {
     	return false;
     }
     
+    //PeopleActivity.appfriends.get(i).id
+    
+    //////////////////////////////////////////////////
+    //Get GPS coordinates and send/recieve coordinates
+    //////////////////////////////////////////////////
+    
 	public class DifferentLocationListener implements LocationListener {
-		
+		public String coordinates;
 		//@Override
-		public void onLocationChanged(final Location loc){
-			Log.e("Location Loc", "default message");
+		public void onLocationChanged (final Location loc){
+
 			handler.post(new Runnable() {
 				
 				public void run() {
 			
-					loc.getLatitude();
-					loc.getLongitude();
-					String Text = "Latitude: " + loc.getLatitude() + "  Longitude: " + loc.getLongitude();
-					makeToast(Text);
+					//loc.getLatitude();
+					//loc.getLongitude();
+					
+					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
+
+					//pushing text string
+					/*
+					Map<String, String> args_ = new HashMap<String, String>();
+					args_.put("app", coordinates);
+					args_.put("uid", Globals.uid);
+
+					HttpUtils.get().doPost("http://www.peoplefinderredevs.appspot.com/" + "uidpackagepairs", args_, new HttpCallback() {
+
+						public void onResponse(HttpResponse resp) {
+							// TODO Auto-generated method stub
+							try {											
+								Log.i("GamesActivity", "Succesful post of " + coordinates + " " + HttpUtils.get().responseToString(resp));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+						@Override
+						public void onError(Exception e) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					});
+					*/
+					//end push
+					
+					//now we need to pull a text string
+					
+					
 				}
 			});
+			
+
 
 		}
 		
