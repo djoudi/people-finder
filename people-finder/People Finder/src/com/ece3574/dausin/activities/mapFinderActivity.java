@@ -203,6 +203,7 @@ public class mapFinderActivity extends MapActivity {
 					/////////////////////////////
 					//End Pull String. It should exist in XML Parser. I dont' understand how to access it though.
 					//How do we set something like String coordinatesRecieved  = ParsedXML<I_DONT_CARE, coordinates_I_Want>
+					//coordinatesRecieved should then be toasted.
 					/////////////////////////////
 					
 					
