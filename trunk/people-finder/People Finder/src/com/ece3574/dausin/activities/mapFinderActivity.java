@@ -24,7 +24,6 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-//import android.content.Context;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,7 +33,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-//import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -65,22 +64,9 @@ public class mapFinderActivity extends MapActivity {
         List<Overlay> mapOverlays = mapView.getOverlays();
         
         /* Get picture from facebook to put on map*/
-        // TODO Not working correctly fix it UP!!!
+
         Drawable drawable;
-		try {
-			drawable = drawableFromUrl(PeopleFinderActivity.getPractice());
-	        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, this);
-	        
-	        GeoPoint point = new GeoPoint(19240000,-99120000);
-	        OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
-	    
-	        itemizedoverlay.addOverlay(overlayitem);
-	        mapOverlays.add(itemizedoverlay);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 		//Jake's added onCreate method
 		LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         LocationListener mlocListener = new DifferentLocationListener();
@@ -91,17 +77,36 @@ public class mapFinderActivity extends MapActivity {
 		provider = mlocManager.getBestProvider(criteria, false);
 		Location location = mlocManager.getLastKnownLocation(provider);
 
+		int lat = 0;
+		int lng = 0;
+		
 		// Initialize the location fields
 		if (location != null) {
 			System.out.println("Provider " + provider + " has been selected.");
-			double lat = location.getLatitude();
-			double lng = location.getLongitude();
+			lat = (int) location.getLatitude();
+			lng = (int) location.getLongitude();
 			lat = lat * MICRO_DEGREE;
 			lng = lng * MICRO_DEGREE;
 		} else {
-			
+		}
+		        
+        
+		try {
+			drawable = drawableFromUrl(PeopleFinderActivity.getPractice());
+	        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, this);
+	        
+	        GeoPoint point = new GeoPoint(lat,lng);
+	        OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
+	    
+	        itemizedoverlay.addOverlay(overlayitem);
+	        mapOverlays.add(itemizedoverlay);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
+
+
     }
     
     /* Function to convert URL images to drawables */
@@ -131,6 +136,11 @@ public class mapFinderActivity extends MapActivity {
     
 	public class DifferentLocationListener implements LocationListener {
 		public String coordinates;
+		// Temporary Method to access GPS Coordinates
+		public GeoPoint getCoordinates(final Location loc){
+			GeoPoint p1 = new GeoPoint ((int) (loc.getLatitude() * 1E6), (int) (loc.getLongitude() * 1E6));
+			return p1;
+		}
 		//@Override
 		public void onLocationChanged (final Location loc){
 
@@ -138,8 +148,11 @@ public class mapFinderActivity extends MapActivity {
 				
 				public void run() {
 			
-					//loc.getLatitude();
-					//loc.getLongitude();
+					int newLat = 0;
+					int newLong = 0;
+					
+					newLat = (int)loc.getLatitude()*MICRO_DEGREE;
+					newLong = (int)loc.getLongitude()*MICRO_DEGREE;
 					
 					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
 					Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
@@ -163,7 +176,6 @@ public class mapFinderActivity extends MapActivity {
 							}
 
 						}
-						@Override
 						public void onError(Exception e) {
 							// TODO Auto-generated method stub
 							
