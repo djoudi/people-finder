@@ -46,7 +46,10 @@ public class mapFinderActivity extends MapActivity {
 	//Added for Jake's functions
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
-	private String putId, theirGPS;
+	private String putId, theirGPS, theirLat, theirLong;
+	private int theirLatInt, theirLongInt;
+	
+	public static final int MICRO_DEGREE = 100000;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -185,6 +188,12 @@ public class mapFinderActivity extends MapActivity {
 								String response = HttpUtils.get().responseToString(resp);
 								ParsedXML = XMLParser.parseUidPackagePairsXML(response); //ParsedXML should now have both strings
 								theirGPS = ParsedXML.get(putId);
+								int index = theirGPS.indexOf("|");
+								theirLat = theirGPS.substring(0, index);
+								theirLong = theirGPS.substring(index+1, theirGPS.length());
+								theirLatInt = Integer.valueOf(theirLat) * MICRO_DEGREE;
+								theirLongInt = Integer.valueOf(theirLong) * MICRO_DEGREE;
+								
 								Log.e("Test Message", response);
 								makeToast(response);
 								//friendsLayout_.removeAllViews();
