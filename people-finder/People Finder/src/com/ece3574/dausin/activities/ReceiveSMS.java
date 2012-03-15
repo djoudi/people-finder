@@ -33,7 +33,10 @@ public class ReceiveSMS extends BroadcastReceiver
 	                str += "\n";        
 	            }
 	            //---display the new SMS message---
-	            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+	            Toast.makeText(context, "You just received a request, in a future build cycle, when you accept this request, this will launch the map on this phone as well.", Toast.LENGTH_LONG).show();
+	            
+	           // Intent dialogactivityIntent = new Intent(context, DialogActivity.class);
+	           // context.startActivity(dialogactivityIntent);
 	        }
  
 	    }                         
