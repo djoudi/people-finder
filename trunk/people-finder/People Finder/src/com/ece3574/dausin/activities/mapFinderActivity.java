@@ -46,6 +46,7 @@ public class mapFinderActivity extends MapActivity {
 	//Added for Jake's functions
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
+	private String putId, theirGPS;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -163,7 +164,7 @@ public class mapFinderActivity extends MapActivity {
 					
 					String accountName = PeopleFinderActivity.currentTag; //since apparently we change currentTag below
 					putMap = new HashMap<String, String>();
-					
+					putId = accountName;
 					PeopleFinderActivity.currentTag = "the";
 					int i = 0;
 					while( i<PeopleFinderActivity.appFriends.size()){
@@ -183,6 +184,7 @@ public class mapFinderActivity extends MapActivity {
 								//ParsedXML has also been changed to become static
 								String response = HttpUtils.get().responseToString(resp);
 								ParsedXML = XMLParser.parseUidPackagePairsXML(response); //ParsedXML should now have both strings
+								theirGPS = ParsedXML.get(putId);
 								Log.e("Test Message", response);
 								makeToast(response);
 								//friendsLayout_.removeAllViews();
