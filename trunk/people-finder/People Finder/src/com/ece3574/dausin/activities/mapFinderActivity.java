@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 
 import com.ece3574.dausin.R;
+import com.ece3574.dausin.appengine.XMLParser;
 import com.ece3574.dausin.async.HttpCallback;
 import com.ece3574.dausin.async.HttpUtils;
 import com.ece3574.dausin.facebook.BaseRequestListener;
@@ -119,9 +120,9 @@ public class mapFinderActivity extends MapActivity {
 					//loc.getLongitude();
 					
 					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
-
+					Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
 					//pushing text string
-					/*
+					
 					Map<String, String> args_ = new HashMap<String, String>();
 					args_.put("app", coordinates);
 					args_.put("uid", Globals.uid);
@@ -145,7 +146,42 @@ public class mapFinderActivity extends MapActivity {
 						}
 						
 					});
-					*/
+					
+					
+					//pulling string
+					/*
+					putMap = new HashMap<String, String>();
+					
+					PeopleFinderActivity.currentTag = "the";
+					putMap.put("uid"+Integer.toString(i+1), "680405878");
+
+					
+					HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
+
+						public void onResponse(HttpResponse resp) {
+							
+							try {
+								String response = HttpUtils.get().responseToString(resp);
+								ParsedXML = XMLParser.parseUidPackagePairsXML(response);
+								Log.e("asdfasdf", response);
+								makeToast(response);
+								//friendsLayout_.removeAllViews();
+								//parseAppFriends();
+								//progressDialog.dismiss();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						}
+
+						public void onError(Exception e) {
+							//Log.e("Appengine error", e.printStackTrace());
+							
+						}
+						
+					});
+					 */
 					//end push
 					
 					//now we need to pull a text string
