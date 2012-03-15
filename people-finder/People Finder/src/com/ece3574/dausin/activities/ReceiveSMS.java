@@ -1,14 +1,14 @@
 package com.ece3574.dausin.activities;
 
-import android.app.AlertDialog;
+//import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
+//import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
-import com.ece3574.dausin.activities.PeopleFinderActivity;
+//import com.ece3574.dausin.activities.PeopleFinderActivity;
 
 public class ReceiveSMS extends BroadcastReceiver
 	{
