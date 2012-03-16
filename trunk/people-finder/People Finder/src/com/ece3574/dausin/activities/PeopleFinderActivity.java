@@ -637,15 +637,16 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		try {
 			appFriends.clear();
 			String response = HttpUtils.get().responseToString(resp);
+			Log.e("multiquery", response);
 	        JSONArray json;
 			json = new JSONArray(response);
 			JSONObject d = json.getJSONObject(1);
 			JSONArray json2 = d.getJSONArray("fql_result_set");
 				
-			int l = (json2 != null ? d.length() : 0);
+			int l = (json2 != null ? json2.length() : 0);
 			Log.d("Facebook-Example-Friends Request", "d.length(): " + l);
 
-			for (int i=0; i<l-1; i++) {
+			for (int i=0; i<l; i++) {
 				JSONObject o = json2.getJSONObject(i);
 				String n = o.getString("name");
 	    		String id = o.getString("id");
