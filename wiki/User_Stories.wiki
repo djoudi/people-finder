@@ -24,5 +24,9 @@ http://people-finder.googlecode.com/svn/trunk/US2.png
       * See the other person on the map - Jacob
       * Get the location data from GPS - Jake
       * App Engine for storing GPS coordinates - Kyle
-
 http://people-finder.googlecode.com/svn/trunk/US3.png
+
+= 4th Build Cycle =
+
+ * User can see an arrow that will point in the direction of the person they're looking for regardless of what is shown on the map
+http://people-finder.googlecode.com/svn/trunk/US4.png
