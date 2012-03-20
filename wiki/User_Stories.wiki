@@ -32,5 +32,8 @@ http://people-finder.googlecode.com/svn/trunk/US3.png
       * Implementation of compass - Jake
       * Wifi and bug fixing - Kyle
       * Display - Jacob
+      * User can either accept or ignore a map request, if accepted the accepting phone will send a notification to the first phone and both phones will go to the map activity. -Jason
+
+
 
 http://people-finder.googlecode.com/svn/trunk/US4.png
