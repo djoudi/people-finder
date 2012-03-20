@@ -29,4 +29,8 @@ http://people-finder.googlecode.com/svn/trunk/US3.png
 = 4th Build Cycle =
 
  * User can see an arrow that will point in the direction of the person they're looking for regardless of what is shown on the map
+      * Implementation of compass - Jake
+      * Wifi and bug fixing - Kyle
+      * Display - Jacob
+
 http://people-finder.googlecode.com/svn/trunk/US4.png
