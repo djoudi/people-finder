@@ -30,10 +30,7 @@ http://people-finder.googlecode.com/svn/trunk/US3.png
 
  * User can see an arrow that will point in the direction of the person they're looking for regardless of what is shown on the map
       * Implementation of compass - Jake
-      * Wifi and bug fixing - Kyle
+      * Proximity detection and bug fixes - Kyle
       * Display - Jacob
       * User can either accept or ignore a map request, if accepted the accepting phone will send a notification to the first phone and both phones will go to the map activity. -Jason
-
-
-
 http://people-finder.googlecode.com/svn/trunk/US4.png
