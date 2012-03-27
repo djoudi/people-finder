@@ -26,6 +26,7 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
 		Intent i = new Intent();
 		i.setClassName("com.ece3574.dausin.activities.ProximityIntentReceiver", 
 				"com.ece3574.dausin.activities.CompassActivity");
+		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(i);
         
 
