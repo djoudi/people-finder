@@ -50,6 +50,8 @@ public class mapFinderActivity extends MapActivity {
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
 	private String putId, theirGPS, theirLat, theirLong;
+	public static double myLat, myLong, yourLat, yourLong;
+
 	private int theirLatInt, theirLongInt, newLat, newLng;
 	private String provider;
 	private LocationManager mlocManager;
@@ -158,7 +160,8 @@ public class mapFinderActivity extends MapActivity {
 			
 					newLat = 0;
 					newLng = 0;
-					
+					myLat = loc.getLatitude();
+					myLong= loc.getLongitude();
 					newLat = (int)loc.getLatitude()*MICRO_DEGREE;
 					newLng = (int)loc.getLongitude()*MICRO_DEGREE;
 					
@@ -228,6 +231,10 @@ public class mapFinderActivity extends MapActivity {
 								int index = theirGPS.indexOf("|");
 								theirLat = theirGPS.substring(0, index);
 								theirLong = theirGPS.substring(index+1, theirGPS.length());
+								
+								yourLat = Double.valueOf(theirLat);
+								yourLong = Double.valueOf(theirLong);
+								
 								makeToast(theirLat + " " + theirLong);
 								theirLatInt = Integer.valueOf(theirLat) * MICRO_DEGREE;
 								theirLongInt = Integer.valueOf(theirLong) * MICRO_DEGREE;
