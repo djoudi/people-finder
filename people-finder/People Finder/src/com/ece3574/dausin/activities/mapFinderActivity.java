@@ -24,7 +24,10 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -47,8 +50,13 @@ public class mapFinderActivity extends MapActivity {
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
 	private String putId, theirGPS, theirLat, theirLong;
-	private int theirLatInt, theirLongInt;
+	private int theirLatInt, theirLongInt, newLat, newLng;
 	private String provider;
+	private LocationManager mlocManager;
+	private static final float PROXIMITY_RADIUS = 50;
+	private static final int PROXIMITY_EXPIRES = -1;
+	
+	private static final String PROX_ALERT_INTENT = "com.ece3574.dausin.activities.CompassActivity";
 	
 	public static final int MICRO_DEGREE = 100000;
 	
@@ -68,7 +76,7 @@ public class mapFinderActivity extends MapActivity {
         Drawable drawable;
 
 		//Jake's added onCreate method
-		LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         LocationListener mlocListener = new DifferentLocationListener();
         mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 30000, 0, mlocListener); //checks ofr updates every 30 seconds
         //end Jake's added onCreate
@@ -148,11 +156,11 @@ public class mapFinderActivity extends MapActivity {
 				
 				public void run() {
 			
-					int newLat = 0;
-					int newLong = 0;
+					newLat = 0;
+					newLng = 0;
 					
 					newLat = (int)loc.getLatitude()*MICRO_DEGREE;
-					newLong = (int)loc.getLongitude()*MICRO_DEGREE;
+					newLng = (int)loc.getLongitude()*MICRO_DEGREE;
 					
 					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
 					Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
@@ -273,6 +281,19 @@ public class mapFinderActivity extends MapActivity {
 		
 		
 	}/* End of Class MyLocationListener */
+	public void updateProximity(int aLat, int aLng){
+		
+		Intent intent = new Intent(PROX_ALERT_INTENT);
+		PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+		
+		//mlocManager.removeProximityAlert(intent);
+		mlocManager.addProximityAlert(aLat, aLng, PROXIMITY_RADIUS, PROXIMITY_EXPIRES, proximityIntent);
+		
+		IntentFilter filter = new IntentFilter(PROX_ALERT_INTENT); 
+		registerReceiver(new ProximityIntentReceiver(), filter);
+	}
+	
 	
 	public void makeToast(String str) {
 		Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
