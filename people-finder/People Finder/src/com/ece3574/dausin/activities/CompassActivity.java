@@ -1,12 +1,10 @@
 package com.ece3574.dausin.activities;
 
-//import pack.Compass.Rose;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Map;
 
+import com.ece3574.dausin.R;
 import org.apache.http.HttpResponse;
 
 import com.ece3574.dausin.appengine.XMLParser;
@@ -15,24 +13,22 @@ import com.ece3574.dausin.async.HttpUtils;
 import com.ece3574.dausin.global.Globals;
 
 import android.app.Activity;
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Handler;
 
 public class CompassActivity extends Activity implements SensorEventListener, LocationListener{
@@ -42,9 +38,14 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
 	
-	public static int degree = 0;
+	public static float degree = 0;
 	SensorManager sensorManager;
 	static final int sensor = Sensor.TYPE_ORIENTATION;
+	
+	public ImageView myView = (ImageView) findViewById(R.id.arrowPic);
+    public Bitmap bmpOriginal = BitmapFactory.decodeResource(this.getResources(), R.drawable.arrow);
+    public Bitmap bmResult = Bitmap.createBitmap(bmpOriginal.getWidth(), bmpOriginal.getHeight(), Bitmap.Config.ARGB_8888);
+    public Canvas tempCanvas = new Canvas(bmResult); 
 	//Rose rose;
 
 	/** Called when the activity is first created. */
@@ -52,6 +53,24 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+
+		/*---------------------------------------------------------JACOB*/
+		// Setting up screen layout to display arrow
+		/*---------------------------------------------------------JACOB*/
+		setContentView(R.layout.compassarrow);
+		
+		/*---------------------------------------------------------JACOB*/
+		// Initialize Arrow Picture
+		/*---------------------------------------------------------JACOB*/
+        tempCanvas.rotate(degree, bmpOriginal.getWidth()/2, bmpOriginal.getHeight()/2);
+        tempCanvas.drawBitmap(bmpOriginal, 0, 0, null);
+        myView.setImageBitmap(bmResult);
+		
+		
+		// Set full screen view
+		/*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 	    LocationListener mlocListener = this;
@@ -63,7 +82,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		Location location = mlocManager.getLastKnownLocation(provider);
 		
 		// get sensor manager
-		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);*/
 	}
 
 	public void onLocationChanged (final Location loc){
@@ -283,21 +302,28 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		
 		degree = intAngle;
 		
+		/*---------------------------------------------------------JACOB*/
+		// Update arrow picture
+		/*---------------------------------------------------------JACOB*/
+        tempCanvas.rotate(degree, bmpOriginal.getWidth()/2, bmpOriginal.getHeight()/2);
+        tempCanvas.drawBitmap(bmpOriginal, 0, 0, null);
+        myView.setImageBitmap(bmResult);
+		
 	}
 
-	@Override
+
 	public void onProviderDisabled(String provider) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void onProviderEnabled(String provider) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
 		
