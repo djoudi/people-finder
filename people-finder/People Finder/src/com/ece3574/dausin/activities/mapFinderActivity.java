@@ -87,25 +87,19 @@ public class mapFinderActivity extends MapActivity {
 		provider = mlocManager.getBestProvider(criteria, false);
 		Location location = mlocManager.getLastKnownLocation(provider);
 
-		int lat = 0;
-		int lng = 0;
-		
-		// Initialize the location fields
-		if (location != null) {
-			System.out.println("Provider " + provider + " has been selected.");
-			lat = (int) location.getLatitude();
-			lng = (int) location.getLongitude();
-			lat = lat * MICRO_DEGREE;
-			lng = lng * MICRO_DEGREE;
-		} else {
+		if (location == null){
+			theirLatInt = 19240000;
+			theirLongInt = -99120000;
+		}else{
+			theirLatInt = (int) (location.getLatitude() * 1E6);
+			theirLongInt = (int) (location.getLongitude() * 1E6);
 		}
-		        
-        
+		
 		try {
 			drawable = drawableFromUrl(PeopleFinderActivity.getPractice());
 	        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, this);
 	        
-	        GeoPoint point = new GeoPoint(lat,lng);
+	        GeoPoint point = new GeoPoint(theirLatInt, theirLongInt);
 	        OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
 	    
 	        itemizedoverlay.addOverlay(overlayitem);
@@ -167,6 +161,22 @@ public class mapFinderActivity extends MapActivity {
 					
 					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
 					Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
+					
+					
+					/*-------------------------------------------------------------------------------*/
+					/* Update picture on Map				 */
+					/*-------------------------------------------------------------------------------*/
+					Drawable drawable;
+					try {
+						drawable = drawableFromUrl(PeopleFinderActivity.getPractice());
+				        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, new mapFinderActivity() );
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			        
+			        GeoPoint point = new GeoPoint(newLat, newLng);
+			        OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
 					
 					///////////////////////////
 					//PUSHING STRING

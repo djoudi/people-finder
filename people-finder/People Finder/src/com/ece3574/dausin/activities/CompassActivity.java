@@ -63,7 +63,6 @@ public class CompassActivity extends Activity implements SensorEventListener{
 
 	}
 		
-	@Override
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
 	// TODO Auto-generated method stub	
 	}
@@ -80,7 +79,6 @@ public class CompassActivity extends Activity implements SensorEventListener{
 		return angle;
 	}
 
-	@Override
 	public void onSensorChanged(SensorEvent event) {
 		
 		double myX 		= mapFinderActivity.myLat;
