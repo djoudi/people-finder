@@ -231,7 +231,7 @@ public class mapFinderActivity extends MapActivity {
 								makeToast(theirLat + " " + theirLong);
 								theirLatInt = Integer.valueOf(theirLat) * MICRO_DEGREE;
 								theirLongInt = Integer.valueOf(theirLong) * MICRO_DEGREE;
-								
+								updateProximity(Integer.valueOf(theirLat), Integer.valueOf(theirLong));
 								Log.e("Test Message", response);
 								makeToast(response);
 								//friendsLayout_.removeAllViews();
@@ -281,6 +281,7 @@ public class mapFinderActivity extends MapActivity {
 		
 		
 	}/* End of Class MyLocationListener */
+	
 	public void updateProximity(int aLat, int aLng){
 		
 		Intent intent = new Intent(PROX_ALERT_INTENT);
