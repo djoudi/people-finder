@@ -1,16 +1,47 @@
 package com.ece3574.dausin.activities;
 
 //import pack.Compass.Rose;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.http.HttpResponse;
+
+import com.ece3574.dausin.appengine.XMLParser;
+import com.ece3574.dausin.async.HttpCallback;
+import com.ece3574.dausin.async.HttpUtils;
+import com.ece3574.dausin.global.Globals;
+
 import android.app.Activity;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
+import android.os.Handler;
 
-public class CompassActivity extends Activity implements SensorEventListener{
+public class CompassActivity extends Activity implements SensorEventListener, LocationListener{
+	
+	private LocationManager mlocManager;
+	private String provider, putId, theirGPS, theirLat, theirLong;
+	private Handler handler = new Handler();
+	private HashMap<String, String> putMap, ParsedXML;
+	
 	public static int degree = 0;
 	SensorManager sensorManager;
 	static final int sensor = Sensor.TYPE_ORIENTATION;
@@ -21,19 +52,128 @@ public class CompassActivity extends Activity implements SensorEventListener{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		/*
-		// Set full screen view
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-		WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
-		rose = new Rose(this);
-		setContentView(rose);
-		*/
+		mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+	    LocationListener mlocListener = this;
+	    mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 30000, 0, mlocListener); //checks ofr updates every 30 seconds
+	    //end Jake's added onCreate
+	    
+	    Criteria criteria = new Criteria();
+		provider = mlocManager.getBestProvider(criteria, false);
+		Location location = mlocManager.getLastKnownLocation(provider);
 		
 		// get sensor manager
 		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 	}
+
+	public void onLocationChanged (final Location loc){
+
+		handler.post(new Runnable() {
+			
+			public void run() {
+				
+				mapFinderActivity.myLat = loc.getLatitude();
+				mapFinderActivity.myLong= loc.getLongitude();
+				
+				final String coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
+				Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
+				
+				///////////////////////////
+				//PUSHING STRING
+				///////////////////////////
+				Map<String, String> args_ = new HashMap<String, String>();
+				args_.put("app", coordinates); //posts coordinates to app
+				args_.put("uid", Globals.uid);
+
+				HttpUtils.get().doPost("http://www.peoplefinderredevs.appspot.com/" + "uidpackagepairs", args_, new HttpCallback() {
+
+					public void onResponse(HttpResponse resp) {
+						// TODO Auto-generated method stub
+						try {											
+							Log.i("GamesActivity", "Succesful post of " + coordinates + " " + HttpUtils.get().responseToString(resp));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+					public void onError(Exception e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
+				
+				
+				////////////////////////////
+				// PULLING STRING
+				////////////////////////////
+				
+				//the account that we are recieving from should be the facebook in the
+				//PeopleFinderActivity.currentTag string
+				//so then based on
+				//putMap was changed to static in PeopleFinderActivity to access it here.
+				//app friends was made public to be used in here
+				
+				String accountName = PeopleFinderActivity.currentTag; //since apparently we change currentTag below
+				putMap = new HashMap<String, String>();
+				putId = accountName;
+				PeopleFinderActivity.currentTag = "the";
+				int i = 0;
+				while( i<PeopleFinderActivity.appFriends.size()){
+					putMap.put("uid"+Integer.toString(i+1), PeopleFinderActivity.appFriends.get(i).id);
+					++i;
+				}
+				
+				putMap.put("uid"+Integer.toString(i+1), accountName);
+
+				
+				HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
+
+					public void onResponse(HttpResponse resp) {
+						
+						try {
+							
+							//ParsedXML has also been changed to become static
+							String response = HttpUtils.get().responseToString(resp);
+							ParsedXML = XMLParser.parseUidPackagePairsXML(response); //ParsedXML should now have both strings
+							theirGPS = ParsedXML.get(putId);
+							int index = theirGPS.indexOf("|");
+							theirLat = theirGPS.substring(0, index);
+							theirLong = theirGPS.substring(index+1, theirGPS.length());
+							
+							mapFinderActivity.yourLat = Double.valueOf(theirLat);
+							mapFinderActivity.yourLong = Double.valueOf(theirLong);
+							
+							Log.e("Test Message", response);
+							//friendsLayout_.removeAllViews();
+							//parseAppFriends();
+							//progressDialog.dismiss();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}
+
+					public void onError(Exception e) {
+						//Log.e("Appengine error", e.printStackTrace());
+						
+					}
+					
+				});
+				 
+				/////////////////////////////
+				//End Pull String. It should exist in XML Parser. I dont' understand how to access it though.
+				//How do we set something like String coordinatesRecieved  = ParsedXML<I_DONT_CARE, coordinates_I_Want>
+				//coordinatesRecieved should then be toasted.
+				/////////////////////////////
+
+			}
+		});
+
+	}
+		
 	
 	// register to listen to sensors
 	@Override
@@ -142,6 +282,24 @@ public class CompassActivity extends Activity implements SensorEventListener{
 		//Log.d("Difference: ", (" "+intAngle));
 		
 		degree = intAngle;
+		
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
 		
 	}
 	
