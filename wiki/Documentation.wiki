@@ -27,3 +27,8 @@ Lastly, pressing "Add a friend" will bring up a list of all of your friends.  Pr
 - upon sending the request the sending app will go to the map dialog and display you on the map
 
 - the receiving app, after receiving the request, will get a toast saying that in the next build cycle the app receiver will be able to accept or deny the request -- if accepted the receiving app will go to the map dialog and place both people on it, and if denied nothing will happen
+
+
+= *Build Cycle Four Notes:* =
+
+- known bug to fix this week: whenever the phone receives any text it will toast -- this week it should only respond to a text sent by the app to that phone
