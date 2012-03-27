@@ -68,10 +68,9 @@ public class mapFinderActivity extends MapActivity {
         setContentView(R.layout.map);
         
         // Creates the MapView for the Activity
-        MapView mapView = (MapView) findViewById(R.id.mapview);
+    	MapView mapView = (MapView) findViewById(R.id.mapview);
+    	List<Overlay> mapOverlays = mapView.getOverlays();
         mapView.setBuiltInZoomControls(true);
-        
-        List<Overlay> mapOverlays = mapView.getOverlays();
         
         /* Get picture from facebook to put on map*/
 
@@ -166,17 +165,18 @@ public class mapFinderActivity extends MapActivity {
 					/*-------------------------------------------------------------------------------*/
 					/* Update picture on Map				 */
 					/*-------------------------------------------------------------------------------*/
-					Drawable drawable;
+					/*Drawable drawable;
 					try {
 						drawable = drawableFromUrl(PeopleFinderActivity.getPractice());
-				        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, new mapFinderActivity() );
+				        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, new mapFinderActivity());
+				        GeoPoint point = new GeoPoint(newLat, newLng);
+				        OverlayItem overlayitem = new OverlayItem(point, "Yo Homie Dawgs", "I'm somewheres!");
+				        itemizedoverlay.addOverlay(overlayitem);
+				        mapOverlays.add(itemizedoverlay);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
-			        
-			        GeoPoint point = new GeoPoint(newLat, newLng);
-			        OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
+					}*/
 					
 					///////////////////////////
 					//PUSHING STRING
@@ -239,6 +239,10 @@ public class mapFinderActivity extends MapActivity {
 								ParsedXML = XMLParser.parseUidPackagePairsXML(response); //ParsedXML should now have both strings
 								theirGPS = ParsedXML.get(putId);
 								int index = theirGPS.indexOf("|");
+								Log.e("Index Error", "Index is..."+index);
+								Log.e("GPS string length", "theirGPS is..."+theirGPS.length());
+								Log.e("GPS String", theirGPS);
+								
 								theirLat = theirGPS.substring(0, index);
 								theirLong = theirGPS.substring(index+1, theirGPS.length());
 								
