@@ -43,6 +43,7 @@ public class ReceiveSMS extends BroadcastReceiver
 	            
 	            //Log.e(tag, "after toast, before activity");
 	            if(msgs[0].getMessageBody().toString().contains(PF_REQUEST)){
+	            	abortBroadcast();
 	            	String id = msgs[0].getMessageBody().toString();
 	            	id = id.replace(PF_REQUEST, EMPTY);
 	            	Toast.makeText(context, id, Toast.LENGTH_LONG).show();
