@@ -24,9 +24,9 @@ public class DialogActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		 setContentView(R.layout.receiverdialog);
 		 Intent i = getIntent();
-		 String id = i.getExtras().getString(reqID);
-		 String name = id.substring(id.indexOf(":")+1, id.length());
-		 id = id.substring(0, id.indexOf(":"));
+		 String compound = i.getExtras().getString(reqID);
+		 String name = compound.substring(compound.indexOf(":")+1, compound.length());
+		 final String id = compound.substring(0, compound.indexOf(":"));
 		 header = (TextView) findViewById(R.id.header);
 		 header.setText(name);
 		 
@@ -40,6 +40,9 @@ public class DialogActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				
+				PeopleFinderActivity.currentTag = id;
+				Intent i = new Intent(DialogActivity.this, mapFinderActivity.class);
+	        	startActivity(i);
 				
 			}
 			 
@@ -52,8 +55,7 @@ public class DialogActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
-				
-				
+				finish();
 			}
 			 
 		 });

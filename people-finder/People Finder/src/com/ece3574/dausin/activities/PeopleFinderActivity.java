@@ -210,7 +210,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() { 
 	        public void onClick(DialogInterface dialog, int whichButton) { 
 	           String fone = edit.getText().toString(); 
-	            Toast.makeText(getApplicationContext(), fone + "  :is the number I'm requesting ", Toast.LENGTH_LONG).show();
 	            
 	            String requestMessage = makeMessage();
 				numberFromCDialog = fone;
@@ -494,7 +493,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 
                 PeopleFinderActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                    	makeToast("friends list populated.  " + Integer.toString(friends.size()));
                     	
                     	if(firstDone_ == false && firstTime_ == true){
                     		firstDone_ = true;
@@ -664,40 +662,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			}
 			
 			appFriends = MyQsort.sortArrayList(appFriends);
-			makeToast("App Friends: " + appFriends.size());
-			
-			putMap = new HashMap<String, String>();
-			
-			for(int i=0; i<appFriends.size(); i++){
-				//putMap.put("uid"+Integer.toString(i+1), appFriends.get(i).id);
-				putMap.put("uid"+Integer.toString(i+1), "680405878");
-			}
-			
-			HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
-
-				public void onResponse(HttpResponse resp) {
-					
-					try {
-						String response = HttpUtils.get().responseToString(resp);
-						ParsedXML = XMLParser.parseUidPackagePairsXML(response);
-						Log.e("asdfasdf", response);
-						makeToast(response);
-						//friendsLayout_.removeAllViews();
-						//parseAppFriends();
-						//progressDialog.dismiss();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				}
-
-				public void onError(Exception e) {
-					//Log.e("Appengine error", e.printStackTrace());
-					
-				}
-				
-			});
 			
 			tempFillContainer();
 
