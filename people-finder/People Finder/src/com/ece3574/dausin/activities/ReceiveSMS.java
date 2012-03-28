@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 //import com.ece3574.dausin.activities.PeopleFinderActivity;
 
 public class ReceiveSMS extends BroadcastReceiver
 	{
+	public static final String tag = ReceiveSMS.class.getName();
 	
 	@Override
 	    public void onReceive(Context context, Intent intent) 
@@ -33,12 +35,20 @@ public class ReceiveSMS extends BroadcastReceiver
 	                str += "\n";        
 	            }
 	            //---display the new SMS message---
-	            Toast.makeText(context, "You just received a request, in a future build cycle, when you accept this request, this will launch the map on this phone as well.", Toast.LENGTH_LONG).show();
+	            //Log.e(tag, "before toast and activity launch");
+	            //Toast.makeText(context, "You just received a request, in a future build cycle, when you accept this request, this will launch the map on this phone as well.", Toast.LENGTH_LONG).show();
 	            
-	           // Intent dialogactivityIntent = new Intent(context, DialogActivity.class);
-	           // context.startActivity(dialogactivityIntent);
+	            
+	            //Log.e(tag, "after toast, before activity");
+	            
+	            Intent i = new Intent(context, DialogActivity.class);  
+	            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
+	            context.startActivity(i);
+	            
+	            Log.e(tag, "after activity launch");
+
 	        }
- 
+
 	    }                         
 	    
 	}
