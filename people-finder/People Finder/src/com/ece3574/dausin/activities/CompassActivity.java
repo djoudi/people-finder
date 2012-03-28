@@ -16,7 +16,8 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-
+import android.content.Context;
+import android.location.Criteria;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -25,6 +26,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+
 
 import android.util.Log;
 import android.widget.ImageView;
@@ -71,7 +73,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		/*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 		WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+		*/
 		mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 	    LocationListener mlocListener = this;
 	    mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 30000, 0, mlocListener); //checks ofr updates every 30 seconds
@@ -82,7 +84,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		Location location = mlocManager.getLastKnownLocation(provider);
 		
 		// get sensor manager
-		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);*/
+		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 	}
 
 	public void onLocationChanged (final Location loc){
