@@ -46,7 +46,6 @@ public class ReceiveSMS extends BroadcastReceiver
 	            	abortBroadcast();
 	            	String id = msgs[0].getMessageBody().toString();
 	            	id = id.replace(PF_REQUEST, EMPTY);
-	            	Toast.makeText(context, id, Toast.LENGTH_LONG).show();
 	            	Intent i = new Intent(context, DialogActivity.class);  
 	            	i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
 	            	i.putExtra("reqID", id);
