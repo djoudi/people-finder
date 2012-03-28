@@ -726,9 +726,9 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		}
 	}
 	
-        public static String getPractice(){
+        public static String getPractice(String id){
           String testURL = null;
-          testURL = ("http://graph.facebook.com/"+appFriends.get(0).id+"/picture?type=square");
+          testURL = ("http://graph.facebook.com/"+id+"/picture?type=square");
           return testURL;
   }
    

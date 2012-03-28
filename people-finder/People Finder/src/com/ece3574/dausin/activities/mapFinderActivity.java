@@ -50,6 +50,9 @@ public class mapFinderActivity extends MapActivity {
     /** Called when the activity is first created. */
 	
 	//Added for Jake's functions
+	private MapView mapView;
+	private Drawable drawable, tDrawable;
+	private List<Overlay> mapOverlays;
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
 	private String putId, theirGPS, theirLat, theirLong;
@@ -71,13 +74,11 @@ public class mapFinderActivity extends MapActivity {
         setContentView(R.layout.map);
         
         // Creates the MapView for the Activity
-    	MapView mapView = (MapView) findViewById(R.id.mapview);
-    	List<Overlay> mapOverlays = mapView.getOverlays();
+    	mapView = (MapView) findViewById(R.id.mapview);
+    	mapOverlays = mapView.getOverlays();
         mapView.setBuiltInZoomControls(true);
         
         /* Get picture from facebook to put on map*/
-
-        Drawable drawable;
 
 		//Jake's added onCreate method
 		mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -101,7 +102,7 @@ public class mapFinderActivity extends MapActivity {
 		}
 		
 		try {
-			drawable = drawableFromUrl(PeopleFinderActivity.getPractice());
+			drawable = drawableFromUrl(PeopleFinderActivity.getPractice(Globals.uid));
 	        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, this);
 	        
 	        GeoPoint point = new GeoPoint(theirLatInt, theirLongInt);
@@ -163,6 +164,7 @@ public class mapFinderActivity extends MapActivity {
 					myLong= loc.getLongitude() * MICRO_DEGREE;
 					myLatInt = (int) myLat;
 					myLongInt = (int) myLong;
+					//MAKE YOUR NEW GEOPOINT HERE.
 					
 					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
 					Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
@@ -248,6 +250,9 @@ public class mapFinderActivity extends MapActivity {
 							
 								theirLatInt = (int) yourLat;
 								theirLongInt = (int) yourLong;
+								//MAKE THEIR NEW GEOPOINT HERE.
+								
+								makeGeoPoint(myLatInt, myLongInt, Globals.uid, theirLatInt, theirLongInt, PeopleFinderActivity.currentTag);
 								updateProximity(theirLatInt, theirLongInt);
 								makeToast(response);
 								//friendsLayout_.removeAllViews();
@@ -314,6 +319,38 @@ public class mapFinderActivity extends MapActivity {
 	
 	public void makeToast(String str) {
 		Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+	}
+	
+	public void makeGeoPoint(int mLat, int mLng, String mId, int tLat, int tLng, String tId){
+		try {
+			if(drawable == null){
+				drawable = drawableFromUrl(PeopleFinderActivity.getPractice(mId));
+			}
+			if(tDrawable == null){
+				tDrawable = drawableFromUrl(PeopleFinderActivity.getPractice(tId));
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//CREATION OF MY GEOPOINT HERE
+        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, this);
+        String overlay = "YOU ARE HERE.";
+        GeoPoint point = new GeoPoint(mLat, mLng);
+        OverlayItem overlayitem = new OverlayItem(point, overlay, "");
+        itemizedoverlay.addOverlay(overlayitem);
+        for(int i=0; i<PeopleFinderActivity.appFriends.size(); i++){
+        	if(PeopleFinderActivity.appFriends.get(i).id.matches(tId)){
+        		overlay = PeopleFinderActivity.appFriends.get(i).name;
+        	}
+        }
+        point = new GeoPoint(tLat, tLng);
+        overlayitem = new OverlayItem(point, overlay, "");
+    
+        itemizedoverlay.addOverlay(overlayitem);
+        mapOverlays.clear();
+        mapOverlays.add(itemizedoverlay);
 	}
 
 }
