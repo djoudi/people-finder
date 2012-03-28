@@ -226,7 +226,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	        public void onClick(DialogInterface dialog, int whichButton) { 
 	        	dialog.cancel();
 	           
-	            
+	            Intent i = new Intent(PeopleFinderActivity.this, CompassActivity.class);
+	            startActivity(i);
 	            
 	        } 
 	        }); 
