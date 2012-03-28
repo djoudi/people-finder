@@ -44,11 +44,10 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 	SensorManager sensorManager;
 	static final int sensor = Sensor.TYPE_ORIENTATION;
 	
-	public ImageView myView = (ImageView) findViewById(R.id.arrowPic);
-    public Bitmap bmpOriginal = BitmapFactory.decodeResource(this.getResources(), R.drawable.arrow);
-    public Bitmap bmResult = Bitmap.createBitmap(bmpOriginal.getWidth(), bmpOriginal.getHeight(), Bitmap.Config.ARGB_8888);
-    public Canvas tempCanvas = new Canvas(bmResult); 
-	//Rose rose;
+	public ImageView myView;
+    public Bitmap bmpOriginal;
+    public Bitmap bmResult;
+    public Canvas tempCanvas; 
 
 	/** Called when the activity is first created. */
 	@Override
@@ -64,10 +63,15 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		/*---------------------------------------------------------JACOB*/
 		// Initialize Arrow Picture
 		/*---------------------------------------------------------JACOB*/
-        tempCanvas.rotate(degree, bmpOriginal.getWidth()/2, bmpOriginal.getHeight()/2);
+        myView = (ImageView) findViewById(R.id.arrowPic);
+        
+        bmpOriginal = BitmapFactory.decodeResource(this.getResources(), R.drawable.arrow);
+        bmResult = Bitmap.createBitmap(bmpOriginal.getWidth(), bmpOriginal.getHeight(), Bitmap.Config.ARGB_8888);
+        tempCanvas = new Canvas(bmResult);
+        
+		tempCanvas.rotate(degree, bmpOriginal.getWidth()/2, bmpOriginal.getHeight()/2);
         tempCanvas.drawBitmap(bmpOriginal, 0, 0, null);
         myView.setImageBitmap(bmResult);
-		
 		
 		// Set full screen view
 		/*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -102,7 +106,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 				///////////////////////////
 				//PUSHING STRING
 				///////////////////////////
-				Map<String, String> args_ = new HashMap<String, String>();
+				/*Map<String, String> args_ = new HashMap<String, String>();
 				args_.put("app", coordinates); //posts coordinates to app
 				args_.put("uid", Globals.uid);
 
@@ -123,7 +127,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 						
 					}
 					
-				});
+				});*/
 				
 				
 				////////////////////////////
@@ -136,7 +140,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 				//putMap was changed to static in PeopleFinderActivity to access it here.
 				//app friends was made public to be used in here
 				
-				String accountName = PeopleFinderActivity.currentTag; //since apparently we change currentTag below
+				/*String accountName = PeopleFinderActivity.currentTag; //since apparently we change currentTag below
 				putMap = new HashMap<String, String>();
 				putId = accountName;
 				PeopleFinderActivity.currentTag = "the";
@@ -182,7 +186,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 						
 					}
 					
-				});
+				});*/
 				 
 				/////////////////////////////
 				//End Pull String. It should exist in XML Parser. I dont' understand how to access it though.
@@ -331,5 +335,4 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		
 	}
 	
-
 }
