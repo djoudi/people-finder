@@ -20,6 +20,7 @@ public class ReceiveSMS extends BroadcastReceiver
 	@Override
 	    public void onReceive(Context context, Intent intent) 
 	    {
+			this.abortBroadcast(); 
 	        //---get the SMS message passed in---
 	        Bundle bundle = intent.getExtras();        
 	        SmsMessage[] msgs = null;
@@ -31,29 +32,57 @@ public class ReceiveSMS extends BroadcastReceiver
 	            msgs = new SmsMessage[pdus.length];            
 	            for (int i=0; i<msgs.length; i++){
 	                msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);                
-	                str += "SMS from " + msgs[i].getOriginatingAddress();                     
-	                str += " :";
-	                str += msgs[i].getMessageBody().toString();
-	                str += "\n";        
+	                String body = msgs[i].getMessageBody().toString();
+	                str = body + ":" + msgs[i].getOriginatingAddress();     
 	            }
 	            //---display the new SMS message---
 	            //Log.e(tag, "before toast and activity launch");
-	            //Toast.makeText(context, "You just received a request, in a future build cycle, when you accept this request, this will launch the map on this phone as well.", Toast.LENGTH_LONG).show();
+	           // Toast.makeText(context, str, Toast.LENGTH_LONG).show();
 	            
 	            
 	            //Log.e(tag, "after toast, before activity");
-	            if(msgs[0].getMessageBody().toString().contains(PF_REQUEST)){
-	            	abortBroadcast();
-	            	String id = msgs[0].getMessageBody().toString();
-	            	id = id.replace(PF_REQUEST, EMPTY);
-	            	Intent i = new Intent(context, DialogActivity.class);  
-	            	i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
-	            	i.putExtra("reqID", id);
-	            	context.startActivity(i);
+
+	            Log.e(tag, "before text is parced");
+	            String[] temp;
+	            String delimiter = ":";
+	            temp = str.split(delimiter);
+	            if(temp[0].equals("PF")){
+	            	if(temp[1].equals("REQUEST")){
+	            		Log.e(tag, "in Request block");
+		            	//Toast.makeText(context, temp[2], Toast.LENGTH_LONG).show();
+			            Intent i = new Intent(context, DialogActivity.class);  
+			            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
+			            i.putExtra("ID_RNUM", temp[2] + ":" + temp[3] + ":" + temp[4]);
+			            //i.putExtra("RETURN_NUMBER", temp[3]);
+			            //Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+			            context.startActivity(i);
+	            	}
+	            	else if(temp[1].equals("ACCEPT_R")){
+	            		Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+	            	}
+
 	            
-	            	Log.e(tag, "after activity launch");
+
+	            	else if(temp[1].equals("IGNORE_R")){
+	            		
+	            	}
+	            	
+	            	else{
+	            		
+	            	}
+
+	             }
+	            else{
+	            	this.clearAbortBroadcast();
 	            }
+	            
+	            
+	            Log.e(tag, "after activity launch");
+
 	        }
+	     
+	        	
+	        
 
 	    }                         
 	    
