@@ -9,7 +9,9 @@ public class DialogActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState){
 		
 		super.onCreate(savedInstanceState);
-		 //setContentView(R.layout.dialogactivity);
+		 setContentView(R.layout.receiverdialog);
+		 
+		 
 		 
 		 
 	}
