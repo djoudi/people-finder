@@ -1,3 +1,6 @@
+//Jacob's Map API Debug Key: 0mRfB2ZoGSks9TbeplyC8Lcno3yrJMLlKOBPqrA
+//Kyle's Map API Dbug Key: 0o92FbCNGOqyOtAyWHGWmlawvB7golYJv7d4oNg
+
 package com.ece3574.dausin.activities;
 
 import java.io.IOException;
@@ -50,9 +53,9 @@ public class mapFinderActivity extends MapActivity {
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
 	private String putId, theirGPS, theirLat, theirLong;
-	public static double myLat, myLong, yourLat, yourLong;
+	public static double myLat, myLong, yourLat, yourLong;	//Used in location.get, which returns a double.
 
-	private int theirLatInt, theirLongInt, newLat, newLng;
+	private int theirLatInt, theirLongInt, myLatInt, myLongInt;	//Used in GeoPoint, which uses int in the constructor.
 	private String provider;
 	private LocationManager mlocManager;
 	private static final float PROXIMITY_RADIUS = 50;
@@ -86,10 +89,13 @@ public class mapFinderActivity extends MapActivity {
 		provider = mlocManager.getBestProvider(criteria, false);
 		Location location = mlocManager.getLastKnownLocation(provider);
 
+		//Your last known Location.
 		if (location == null){
 			theirLatInt = 19240000;
 			theirLongInt = -99120000;
 		}else{
+			myLat = location.getLatitude() * MICRO_DEGREE;
+			myLong = location.getLongitude() * MICRO_DEGREE;
 			theirLatInt = (int) (location.getLatitude() * 1E6);
 			theirLongInt = (int) (location.getLongitude() * 1E6);
 		}
@@ -151,12 +157,12 @@ public class mapFinderActivity extends MapActivity {
 				
 				public void run() {
 			
-					newLat = 0;
-					newLng = 0;
-					myLat = loc.getLatitude();
-					myLong= loc.getLongitude();
-					newLat = (int)loc.getLatitude()*MICRO_DEGREE;
-					newLng = (int)loc.getLongitude()*MICRO_DEGREE;
+					myLatInt = 0;
+					myLongInt = 0;
+					myLat = loc.getLatitude() * MICRO_DEGREE;
+					myLong= loc.getLongitude() * MICRO_DEGREE;
+					myLatInt = (int) myLat;
+					myLongInt = (int) myLong;
 					
 					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
 					Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
@@ -190,7 +196,7 @@ public class mapFinderActivity extends MapActivity {
 						public void onResponse(HttpResponse resp) {
 							// TODO Auto-generated method stub
 							try {											
-								Log.i("GamesActivity", "Succesful post of " + coordinates + " " + HttpUtils.get().responseToString(resp));
+								Log.i("MapActivity", "Succesful post of " + coordinates + " " + HttpUtils.get().responseToString(resp));
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -218,14 +224,8 @@ public class mapFinderActivity extends MapActivity {
 					String accountName = PeopleFinderActivity.currentTag; //since apparently we change currentTag below
 					putMap = new HashMap<String, String>();
 					putId = accountName;
-					PeopleFinderActivity.currentTag = "the";
-					int i = 0;
-					while( i<PeopleFinderActivity.appFriends.size()){
-						putMap.put("uid"+Integer.toString(i+1), PeopleFinderActivity.appFriends.get(i).id);
-						++i;
-					}
 					
-					putMap.put("uid"+Integer.toString(i+1), accountName);
+					putMap.put("uid1", accountName);
 
 					
 					HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
@@ -239,21 +239,16 @@ public class mapFinderActivity extends MapActivity {
 								ParsedXML = XMLParser.parseUidPackagePairsXML(response); //ParsedXML should now have both strings
 								theirGPS = ParsedXML.get(putId);
 								int index = theirGPS.indexOf("|");
-								Log.e("Index Error", "Index is..."+index);
-								Log.e("GPS string length", "theirGPS is..."+theirGPS.length());
-								Log.e("GPS String", theirGPS);
 								
 								theirLat = theirGPS.substring(0, index);
 								theirLong = theirGPS.substring(index+1, theirGPS.length());
 								
-								yourLat = Double.valueOf(theirLat);
-								yourLong = Double.valueOf(theirLong);
-								
-								makeToast(theirLat + " " + theirLong);
-								theirLatInt = Integer.valueOf(theirLat) * MICRO_DEGREE;
-								theirLongInt = Integer.valueOf(theirLong) * MICRO_DEGREE;
-								updateProximity(Integer.valueOf(theirLat), Integer.valueOf(theirLong));
-								Log.e("Test Message", response);
+								yourLat = Double.valueOf(theirLat) * MICRO_DEGREE;
+								yourLong = Double.valueOf(theirLong) * MICRO_DEGREE;
+							
+								theirLatInt = (int) yourLat;
+								theirLongInt = (int) yourLong;
+								updateProximity(theirLatInt, theirLongInt);
 								makeToast(response);
 								//friendsLayout_.removeAllViews();
 								//parseAppFriends();
