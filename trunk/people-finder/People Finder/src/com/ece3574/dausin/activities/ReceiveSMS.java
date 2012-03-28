@@ -14,6 +14,8 @@ import android.widget.Toast;
 public class ReceiveSMS extends BroadcastReceiver
 	{
 	public static final String tag = ReceiveSMS.class.getName();
+	public final String PF_REQUEST = "PF:REQUEST:";
+	public final String EMPTY = "";
 	
 	@Override
 	    public void onReceive(Context context, Intent intent) 
@@ -40,13 +42,16 @@ public class ReceiveSMS extends BroadcastReceiver
 	            
 	            
 	            //Log.e(tag, "after toast, before activity");
+	            if(msgs[0].getMessageBody().toString().contains(PF_REQUEST)){
+	            	String id = msgs[0].getMessageBody().toString();
+	            	id = id.replace(PF_REQUEST, EMPTY);
+	            	Toast.makeText(context, id, Toast.LENGTH_LONG).show();
+	            	Intent i = new Intent(context, DialogActivity.class);  
+	            	i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
+	            	context.startActivity(i);
 	            
-	            Intent i = new Intent(context, DialogActivity.class);  
-	            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
-	            context.startActivity(i);
-	            
-	            Log.e(tag, "after activity launch");
-
+	            	Log.e(tag, "after activity launch");
+	            }
 	        }
 
 	    }                         
