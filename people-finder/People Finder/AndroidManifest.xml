@@ -37,6 +37,10 @@
             	  android:screenOrientation="portrait"
             	  android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
+        <activity android:name=".activities.DialogActivity"
+            	  android:screenOrientation="portrait"
+            	  android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
         
         <receiver android:name=".activities.ReceiveSMS"> 
             <intent-filter> 
