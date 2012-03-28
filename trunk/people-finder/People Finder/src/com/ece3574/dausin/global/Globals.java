@@ -9,6 +9,7 @@ public class Globals {
 	public static boolean hasStarted = false;
 	
 	public static String uid;
+	public static String name;
 	
 	public static int refreshGames = 0;
 	

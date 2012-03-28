@@ -124,6 +124,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	    
 		prefs_ = getSharedPreferences(FILENAME, 0);
 		Globals.uid = prefs_.getString("profileid", "");
+		Globals.name = prefs_.getString("profilename", "");
 
 		profileID = Globals.uid;
 		
@@ -184,8 +185,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	//////////////////////
 	
 	private  String makeMessage(){
-		if(Globals.uid != null){
-			return "PF:" + "REQUEST:" + Globals.uid;
+		if(Globals.uid != null && Globals.name != null){
+			return "PF:" + "REQUEST:" + Globals.uid + ":" + Globals.name;
 		}
 		else {
 			return "";
@@ -536,6 +537,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
                 final String name = json.getString("name");
                 profileID = json.getString("id");
                 Globals.uid = profileID;
+                Globals.name = name;
                 
                 profilePhoto.setOnClickListener(new OnClickListener(){
 
@@ -577,6 +579,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
                 
                 SharedPreferences.Editor editor = prefs_.edit();
                 editor.putString("profileid", profileID);
+                editor.putString("profilename", name);
                 editor.commit();
           
         	    URL img_value = null;
