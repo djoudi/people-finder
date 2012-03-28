@@ -48,6 +48,7 @@ public class ReceiveSMS extends BroadcastReceiver
 	            	Toast.makeText(context, id, Toast.LENGTH_LONG).show();
 	            	Intent i = new Intent(context, DialogActivity.class);  
 	            	i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
+	            	i.putExtra("reqID", id);
 	            	context.startActivity(i);
 	            
 	            	Log.e(tag, "after activity launch");
