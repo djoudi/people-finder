@@ -124,7 +124,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	    
 		prefs_ = getSharedPreferences(FILENAME, 0);
 		Globals.uid = prefs_.getString("profileid", "");
-		Globals.name = prefs_.getString("profilename", "");
 
 		profileID = Globals.uid;
 		
@@ -185,8 +184,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	//////////////////////
 	
 	private  String makeMessage(){
-		if(Globals.uid != null && Globals.name != null){
-			return "PF:" + "REQUEST:" + Globals.uid + ":" + Globals.name;
+		if(Globals.uid != null){
+			return "PF:" + "REQUEST:" + Globals.uid + Globals.name;
 		}
 		else {
 			return "";
@@ -210,6 +209,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() { 
 	        public void onClick(DialogInterface dialog, int whichButton) { 
 	           String fone = edit.getText().toString(); 
+	            //Toast.makeText(getApplicationContext(), fone + "  :is the number I'm requesting ", Toast.LENGTH_LONG).show();
 	            
 	            String requestMessage = makeMessage();
 				numberFromCDialog = fone;
@@ -493,6 +493,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 
                 PeopleFinderActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
+                    	makeToast("friends list populated.  " + Integer.toString(friends.size()));
                     	
                     	if(firstDone_ == false && firstTime_ == true){
                     		firstDone_ = true;
@@ -535,7 +536,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
                 final String name = json.getString("name");
                 profileID = json.getString("id");
                 Globals.uid = profileID;
-                Globals.name = name;
                 
                 profilePhoto.setOnClickListener(new OnClickListener(){
 
@@ -577,7 +577,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
                 
                 SharedPreferences.Editor editor = prefs_.edit();
                 editor.putString("profileid", profileID);
-                editor.putString("profilename", name);
                 editor.commit();
           
         	    URL img_value = null;
@@ -662,6 +661,40 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			}
 			
 			appFriends = MyQsort.sortArrayList(appFriends);
+			makeToast("App Friends: " + appFriends.size());
+			
+			putMap = new HashMap<String, String>();
+			
+			for(int i=0; i<appFriends.size(); i++){
+				//putMap.put("uid"+Integer.toString(i+1), appFriends.get(i).id);
+				putMap.put("uid"+Integer.toString(i+1), "680405878");
+			}
+			
+			HttpUtils.get().doPut(Globals.uidPackagePairsUrl, putMap, new HttpCallback(){
+
+				public void onResponse(HttpResponse resp) {
+					
+					try {
+						String response = HttpUtils.get().responseToString(resp);
+						ParsedXML = XMLParser.parseUidPackagePairsXML(response);
+						Log.e("asdfasdf", response);
+						makeToast(response);
+						//friendsLayout_.removeAllViews();
+						//parseAppFriends();
+						//progressDialog.dismiss();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+
+				public void onError(Exception e) {
+					//Log.e("Appengine error", e.printStackTrace());
+					
+				}
+				
+			});
 			
 			tempFillContainer();
 
@@ -726,9 +759,9 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		}
 	}
 	
-        public static String getPractice(String id){
+        public static String getPractice(){
           String testURL = null;
-          testURL = ("http://graph.facebook.com/"+id+"/picture?type=square");
+          testURL = ("http://graph.facebook.com/"+appFriends.get(0).id+"/picture?type=square");
           return testURL;
   }
    
