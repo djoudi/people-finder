@@ -42,6 +42,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 	private HashMap<String, String> putMap, ParsedXML;
 	
 	public static float degree = 0;
+	public static float prevDegree = 0;
 	SensorManager sensorManager;
 	static final int sensor = Sensor.TYPE_ORIENTATION;
 	
@@ -321,9 +322,12 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		/*---------------------------------------------------------JACOB*/
 		// Update arrow picture
 		/*---------------------------------------------------------JACOB*/
-        tempCanvas.rotate(degree, bmpOriginal.getWidth()/2, bmpOriginal.getHeight()/2);
+		
+        tempCanvas.rotate(degree-prevDegree, bmpOriginal.getWidth()/2, bmpOriginal.getHeight()/2);
+        
         tempCanvas.drawBitmap(bmpOriginal, 0, 0, null);
         myView.setImageBitmap(bmResult);
+		prevDegree = degree;
 		
 	}
 
