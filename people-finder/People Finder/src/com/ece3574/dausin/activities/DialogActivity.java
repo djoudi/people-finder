@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DialogActivity extends Activity {
 	
+	private String nameFrom;
+	private TextView requestFrom;
 	private Button accepting;
 	private Button ignoring;
     private String[] str;
@@ -21,17 +24,27 @@ public class DialogActivity extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		 setContentView(R.layout.dialogactivity);
-		 
-		accepting = (Button) findViewById(R.id.button2);
-		ignoring = (Button) findViewById(R.id.button1);
 
 		 Bundle extras = getIntent().getExtras();
 		 String idAndReturnNumber = extras.getString("ID_RNUM");
-		 //String returnNumber = extras.getString("RETURN_NUMBER");
 
          str = idAndReturnNumber.split(delimiter);
+         
+			for (int i=0; i< PeopleFinderActivity.appFriends.size(); i++){
+				if (PeopleFinderActivity.appFriends.get(i).id == str[0])
+				{
+					nameFrom = PeopleFinderActivity.appFriends.get(i).name; 
+				}
+			}
 		 
-		 Toast.makeText(getApplicationContext(), str[1], Toast.LENGTH_LONG).show();
+		 requestFrom = (TextView) findViewById(R.id.textView1);
+		 accepting = (Button) findViewById(R.id.button2);
+		 ignoring = (Button) findViewById(R.id.button1);
+
+		 
+         requestFrom.setText(nameFrom);
+         
+		 //Toast.makeText(getApplicationContext(), str[1], Toast.LENGTH_LONG).show();
 		 
 		 accepting.setOnClickListener(new View.OnClickListener()
 		 {
@@ -42,7 +55,15 @@ public class DialogActivity extends Activity {
 		        	startActivity(i);
 			 }
 		 });
-		 
+		 ignoring.setOnClickListener(new View.OnClickListener()
+		 {
+			 public void onClick(View v){
+			        SmsManager sms = SmsManager.getDefault();
+			        sms.sendTextMessage(str[1], null, "PF:IGNORE_R", null, null);  
+					Intent i = new Intent(DialogActivity.this, PeopleFinderActivity.class);
+		        	startActivity(i);
+			 }
+		 });
 		 
 		 
 	}
