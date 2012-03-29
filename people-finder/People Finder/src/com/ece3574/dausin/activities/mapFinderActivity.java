@@ -103,6 +103,7 @@ public class mapFinderActivity extends MapActivity {
 		
 		try {
 			drawable = drawableFromUrl(PeopleFinderActivity.getPractice(Globals.uid));
+			tDrawable = drawableFromUrl(PeopleFinderActivity.getPractice(PeopleFinderActivity.currentTag));
 	        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, this);
 	        
 	        GeoPoint point = new GeoPoint(theirLatInt, theirLongInt);
@@ -167,7 +168,7 @@ public class mapFinderActivity extends MapActivity {
 					//MAKE YOUR NEW GEOPOINT HERE.
 					
 					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
-					Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
 					
 					
 					/*-------------------------------------------------------------------------------*/
@@ -254,7 +255,7 @@ public class mapFinderActivity extends MapActivity {
 								
 								makeGeoPoint(myLatInt, myLongInt, Globals.uid, theirLatInt, theirLongInt, PeopleFinderActivity.currentTag);
 								updateProximity(theirLatInt, theirLongInt);
-								makeToast(response);
+								//makeToast(response);
 								//friendsLayout_.removeAllViews();
 								//parseAppFriends();
 								//progressDialog.dismiss();
@@ -322,19 +323,6 @@ public class mapFinderActivity extends MapActivity {
 	}
 	
 	public void makeGeoPoint(int mLat, int mLng, String mId, int tLat, int tLng, String tId){
-		try {
-			if(drawable == null){
-				drawable = drawableFromUrl(PeopleFinderActivity.getPractice(mId));
-			}
-			if(tDrawable == null){
-				tDrawable = drawableFromUrl(PeopleFinderActivity.getPractice(tId));
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		//CREATION OF MY GEOPOINT HERE
         TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, this);
         String overlay = "YOU ARE HERE.";
         GeoPoint point = new GeoPoint(mLat, mLng);
@@ -351,6 +339,7 @@ public class mapFinderActivity extends MapActivity {
         itemizedoverlay.addOverlay(overlayitem);
         mapOverlays.clear();
         mapOverlays.add(itemizedoverlay);
+        Log.v("GeoPoint Update", "mapOverlay added");
 	}
 
 }
