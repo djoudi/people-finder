@@ -71,7 +71,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     private SharedPreferences prefs_;
     private ProgressDialog pDialog_;
     private Facebook facebook;
-    private String profileID, selectedId;
+    private String profileID, selectedId, profileName;
     private TextView profileName_;
     private Boolean firstTime_, firstDone_;
 	AsyncFacebookRunner mAsyncRunner;
@@ -124,8 +124,10 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	    
 		prefs_ = getSharedPreferences(FILENAME, 0);
 		Globals.uid = prefs_.getString("profileid", "");
+		Globals.name = prefs_.getString("profilename", "");
 
 		profileID = Globals.uid;
+		profileName = Globals.name;
 		
 		firstDone_ = false;
 		
@@ -539,50 +541,14 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 
                 Log.d("User Request", "Response: " + response.toString());
                 JSONObject json = Util.parseJson(response);
-                final String name = json.getString("name");
+                profileName = json.getString("name");
                 profileID = json.getString("id");
                 Globals.uid = profileID;
-                
-                profilePhoto.setOnClickListener(new OnClickListener(){
-
-					//hashmap  key is app, value is hello (later going to be string)
-					public void onClick(View arg0) {
-						
-						
-						Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
-						startActivity(i);
-						/*
-						Map<String, String> args_ = new HashMap<String, String>();
-						args_.put("app", "hello");
-						args_.put("uid", Globals.uid);
-
-						HttpUtils.get().doPost("http://www.peoplefinderredevs.appspot.com/" + "uidpackagepairs", args_, new HttpCallback() {
-
-							public void onResponse(HttpResponse resp) {
-								// TODO Auto-generated method stub
-								try {											//change hello to gps string
-									Log.i("GamesActivity", "Succesful post of " + "hello" + " " + HttpUtils.get().responseToString(resp));
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-
-							}
-
-							public void onError(Exception e) {
-								// TODO Auto-generated method stub
-
-							}
-
-						});
-						*/
-						
-					}
-                	
-                });
+                Globals.name = profileName;
                 
                 SharedPreferences.Editor editor = prefs_.edit();
                 editor.putString("profileid", profileID);
+                editor.putString("profilename", profileName);
                 editor.commit();
           
         	    URL img_value = null;
@@ -592,7 +558,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
         	    
                 PeopleFinderActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        profileName_.setText(name);
+                        profileName_.setText(profileName);
                         profilePhoto.setImageBitmap(mIcon1);
                         
                     	if(firstDone_ == false && firstTime_ == true){
