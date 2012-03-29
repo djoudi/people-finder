@@ -32,3 +32,7 @@ Lastly, pressing "Add a friend" will bring up a list of all of your friends.  Pr
 = *Build Cycle Four Notes:* =
 
 - known bug to fix this week: whenever the phone receives any text it will toast -- this week it should only respond to a text sent by the app to that phone
+- Two ways to access compass Activity:
+   - Long press on facebook picture
+   - Click on facebook picture and select "compass" option
+- When you hit "accept" when you get a request both phones will go to the map activity. If you hit "ignore" both phones will go back to the main activity
