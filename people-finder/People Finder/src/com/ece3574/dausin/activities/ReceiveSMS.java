@@ -35,7 +35,7 @@ public class ReceiveSMS extends BroadcastReceiver
 	            }
 	            //---display the new SMS message---
 	            //Log.e(tag, "before toast and activity launch");
-	            Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+	            //Toast.makeText(context, str, Toast.LENGTH_LONG).show();
 	            
 	            
 	            //Log.e(tag, "after toast, before activity");
