@@ -228,10 +228,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { 
 	        public void onClick(DialogInterface dialog, int whichButton) { 
 	        	dialog.cancel();
-	           
-	            Intent i = new Intent(PeopleFinderActivity.this, CompassActivity.class);
-	            startActivity(i);
-	            
 	        } 
 	        }); 
 
@@ -359,6 +355,13 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					
 				}
 				
+			});
+			builder.setNeutralButton("Compass", new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface dialog, int which){
+					dialog.cancel();
+		            Intent i = new Intent(PeopleFinderActivity.this, CompassActivity.class);
+		            startActivity(i);
+				}
 			});
 			
 			dialog = builder.create();
