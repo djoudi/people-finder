@@ -71,7 +71,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     private SharedPreferences prefs_;
     private ProgressDialog pDialog_;
     private Facebook facebook;
-    private String profileID;
+    private String profileID, selectedId;
     private TextView profileName_;
     private Boolean firstTime_, firstDone_;
 	AsyncFacebookRunner mAsyncRunner;
@@ -309,9 +309,11 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		AlertDialog.Builder builder = new AlertDialog.Builder(PeopleFinderActivity.this);
 		AlertDialog dialog;
 		String name = "";
+		selectedId = "";
 		for(Friend f : appFriends){
 			if(f.id.equals(tag)){
 				name = f.name;
+				selectedId = f.id;
 			}
 		}
 		
@@ -363,11 +365,14 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		case LONG_PRESS_ALERT:
 			builder.setTitle(tag);
 			builder.setMessage("Long Press");
-			builder.setPositiveButton("Sweet", new DialogInterface.OnClickListener() {
+			builder.setPositiveButton("Open Compass", new DialogInterface.OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.cancel();
-					//Do Something Here.
+					currentTag = selectedId;
+					Intent i = new Intent(PeopleFinderActivity.this, CompassActivity.class);
+					startActivity(i);
+					
 					
 				}
 				
