@@ -185,7 +185,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	
 	private  String makeMessage(){
 		if(Globals.uid != null){
-			return "PF:" + "REQUEST:" + Globals.uid + Globals.name;
+			return "PF:" + "REQUEST:" + Globals.uid;
 		}
 		else {
 			return "";
@@ -217,8 +217,9 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	            SmsManager sms = SmsManager.getDefault();
 				sms.sendTextMessage(fone, null, requestMessage, null, null);
 				
-				Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
-	        	startActivity(i);
+				//This launch has been moved to the receiver
+				//Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
+	        	//startActivity(i);
 	            
 	        } 
 	        }); 
