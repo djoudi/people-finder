@@ -314,7 +314,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 			intAngle = orientation - intAngle;
 			intAngle = 360-intAngle;
 		}
-		//Log.d("Difference: ", (" "+intAngle));
+		Log.d("Difference: ", (" "+intAngle));
 		
 		degree = intAngle;
 		
