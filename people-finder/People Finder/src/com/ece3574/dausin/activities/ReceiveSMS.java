@@ -14,8 +14,6 @@ import android.widget.Toast;
 public class ReceiveSMS extends BroadcastReceiver
 	{
 	public static final String tag = ReceiveSMS.class.getName();
-	public final String PF_REQUEST = "PF:REQUEST:";
-	public final String EMPTY = "";
 	
 	@Override
 	    public void onReceive(Context context, Intent intent) 
@@ -41,7 +39,6 @@ public class ReceiveSMS extends BroadcastReceiver
 	            
 	            
 	            //Log.e(tag, "after toast, before activity");
-
 	            Log.e(tag, "before text is parced");
 	            String[] temp;
 	            String delimiter = ":";
@@ -52,17 +49,15 @@ public class ReceiveSMS extends BroadcastReceiver
 		            	//Toast.makeText(context, temp[2], Toast.LENGTH_LONG).show();
 			            Intent i = new Intent(context, DialogActivity.class);  
 			            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
-			            i.putExtra("ID_RNUM", temp[2] + ":" + temp[3] + ":" + temp[4]);
+			            i.putExtra("ID_RNUM", temp[2] + ":" + temp[3]);
 			            //i.putExtra("RETURN_NUMBER", temp[3]);
 			            //Toast.makeText(context, str, Toast.LENGTH_LONG).show();
 			            context.startActivity(i);
 	            	}
 	            	else if(temp[1].equals("ACCEPT_R")){
-	            		Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+	            		
 	            	}
-
 	            
-
 	            	else if(temp[1].equals("IGNORE_R")){
 	            		
 	            	}
