@@ -35,7 +35,7 @@ public class ReceiveSMS extends BroadcastReceiver
 	            }
 	            //---display the new SMS message---
 	            //Log.e(tag, "before toast and activity launch");
-	           // Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+	            Toast.makeText(context, str, Toast.LENGTH_LONG).show();
 	            
 	            
 	            //Log.e(tag, "after toast, before activity");
@@ -55,17 +55,18 @@ public class ReceiveSMS extends BroadcastReceiver
 			            context.startActivity(i);
 	            	}
 	            	else if(temp[1].equals("ACCEPT_R")){
-	            		
+	            		 Intent i = new Intent(context, mapFinderActivity.class);  
+				         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				         context.startActivity(i);
+	            		//Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
+	    	        	//startActivity(i);
 	            	}
 	            
 	            	else if(temp[1].equals("IGNORE_R")){
-	            		
+	            		 Intent i = new Intent(context, PeopleFinderActivity.class);  
+				         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				         context.startActivity(i);
 	            	}
-	            	
-	            	else{
-	            		
-	            	}
-
 	             }
 	            else{
 	            	this.clearAbortBroadcast();
