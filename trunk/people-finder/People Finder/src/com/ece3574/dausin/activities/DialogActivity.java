@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,38 +15,37 @@ import android.widget.Toast;
 public class DialogActivity extends Activity {
 	
 	private String nameFrom;
-	private TextView requestFrom;
+	private TextView requestFrom, request;
 	private Button accepting;
 	private Button ignoring;
     private String[] str;
     private String delimiter = ":";
+    private String body = "This person has sent a request to find you using People Finder.";
 	
 	public void onCreate(Bundle savedInstanceState){
 		
 		super.onCreate(savedInstanceState);
-		 setContentView(R.layout.dialogactivity);
+		 setContentView(R.layout.receiverdialog);
 
 		 Bundle extras = getIntent().getExtras();
 		 String idAndReturnNumber = extras.getString("ID_RNUM");
 
          str = idAndReturnNumber.split(delimiter);
          
-			for (int i=0; i< PeopleFinderActivity.appFriends.size(); i++){
-				if (PeopleFinderActivity.appFriends.get(i).id == str[0])
-				{
-					nameFrom = PeopleFinderActivity.appFriends.get(i).name; 
-				}
-			}
+         
 		 
-		 requestFrom = (TextView) findViewById(R.id.textView1);
-		 accepting = (Button) findViewById(R.id.button2);
-		 ignoring = (Button) findViewById(R.id.button1);
+		 requestFrom = (TextView) findViewById(R.id.header);
+		 request= (TextView) findViewById(R.id.body);
+		 accepting = (Button) findViewById(R.id.receiverAccept);
+		 ignoring = (Button) findViewById(R.id.receiverIgnore);
 
 		 
-         requestFrom.setText(nameFrom);
+         requestFrom.setText(str[1] + ":");
+         request.setText(body);
+         
          
 		 //Toast.makeText(getApplicationContext(), str[1], Toast.LENGTH_LONG).show();
-		 
+		 accepting.setText("Accept");
 		 accepting.setOnClickListener(new View.OnClickListener()
 		 {
 			 public void onClick(View v){
@@ -55,6 +55,7 @@ public class DialogActivity extends Activity {
 		        	startActivity(i);
 			 }
 		 });
+		 ignoring.setText("Ignore");
 		 ignoring.setOnClickListener(new View.OnClickListener()
 		 {
 			 public void onClick(View v){

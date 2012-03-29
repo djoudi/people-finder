@@ -187,7 +187,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	
 	private  String makeMessage(){
 		if(Globals.uid != null){
-			return "PF:" + "REQUEST:" + Globals.uid;
+			return "PF:" + "REQUEST:" + Globals.uid + ":" + Globals.name;
 		}
 		else {
 			return "";
