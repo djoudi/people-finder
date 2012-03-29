@@ -363,7 +363,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			dialog.show();
 			break;
 		case LONG_PRESS_ALERT:
-			builder.setTitle(tag);
+			builder.setTitle(name);
 			builder.setMessage("Long Press");
 			builder.setPositiveButton("Open Compass", new DialogInterface.OnClickListener() {
 
@@ -803,6 +803,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     	    hlp.setMargins(0, 0, 10, 0);
     	    ImageView photo = new ImageView(getBaseContext());
     	    photo.setImageBitmap(mIcon1);
+    	    appFriends.get(i).pictureBitmap = mIcon1;
     	    photo.setMaxHeight(MAX_HEIGHT);
     	    photo.setMaxWidth(MAX_HEIGHT);
     	    photo.setLayoutParams(hlp);

@@ -10,6 +10,7 @@ import org.apache.http.HttpResponse;
 import com.ece3574.dausin.appengine.XMLParser;
 import com.ece3574.dausin.async.HttpCallback;
 import com.ece3574.dausin.async.HttpUtils;
+import com.ece3574.dausin.global.Friend;
 import com.ece3574.dausin.global.Globals;
 
 import android.app.Activity;
@@ -44,7 +45,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 	SensorManager sensorManager;
 	static final int sensor = Sensor.TYPE_ORIENTATION;
 	
-	public ImageView myView;
+	public ImageView myView, myPhoto;
     public Bitmap bmpOriginal;
     public Bitmap bmResult;
     public Canvas tempCanvas; 
@@ -72,6 +73,15 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		tempCanvas.rotate(degree, bmpOriginal.getWidth()/2, bmpOriginal.getHeight()/2);
         tempCanvas.drawBitmap(bmpOriginal, 0, 0, null);
         myView.setImageBitmap(bmResult);
+        
+        //Initialize The persons photo - Kyle
+        myPhoto = (ImageView) findViewById(R.id.compassPic);
+        for(Friend f : PeopleFinderActivity.appFriends){
+        	if(f.id == PeopleFinderActivity.currentTag){
+        		myPhoto.setImageBitmap(f.pictureBitmap);
+        	}
+        }
+        
 		
 		// Set full screen view
 		/*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
