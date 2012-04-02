@@ -102,4 +102,13 @@ public class LoginActivity extends Activity {
 
         facebook.authorizeCallback(requestCode, resultCode, data);	//needs to be here
     }
+    
+    /*--------------------------------------------------------JACOB*/
+    // Prevent user from going back to previous activity
+    /*--------------------------------------------------------JACOB*/
+    @Override
+    public void onBackPressed(){
+    	// Don't do anything!
+    }
+    /*--------------------------------------------------------JACOB*/
 }
