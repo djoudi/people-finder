@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 //import android.view.animation.Animation;
@@ -39,33 +40,8 @@ public class AnimateMeActivity extends Activity{
         MediaPlayer startSound = MediaPlayer.create(getApplicationContext(), R.raw.startup); 
         startSound.start();
         
-        
-        findMe.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-	        	Intent i = new Intent(AnimateMeActivity.this, LoginActivity.class);
-	        	startActivity(i);
-			}
-        	
-        });
-        
-        /*findMe.setAnimationListener(new Animation.AnimationListener() {
-			
-			public void onAnimationStart(Animation animation) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			public void onAnimationRepeat(Animation animation) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			public void onAnimationEnd(Animation animation) {
-				// TODO Auto-generated method stub
-				
-			}
-		});*/
+        // Change Activities upon finished animation
+        ifAnimationDone(searchAnimation);
     }
 
 	
@@ -80,4 +56,25 @@ public class AnimateMeActivity extends Activity{
 		return;
 	}
 	
+    /*--------------------------------------------------------JACOB*/
+    // Change activities upon animation end
+	// Credit goes to Stack Overflow
+    /*--------------------------------------------------------JACOB*/
+    private void ifAnimationDone(AnimationDrawable anim){
+    	final AnimationDrawable a = anim;
+    	int timeBetweenChecks = 300;
+    	Handler h = new Handler();
+    	h.postDelayed(new Runnable(){
+    		public void run(){
+    			if (a.getCurrent() != a.getFrame(a.getNumberOfFrames() -1)){
+    				ifAnimationDone(a);
+    			}
+    			else{
+    				Intent i = new Intent(AnimateMeActivity.this, LoginActivity.class);
+    				startActivity(i);
+    			}
+    		}
+    	}, timeBetweenChecks);
+    };
+    /*--------------------------------------------------------JACOB*/
 }
