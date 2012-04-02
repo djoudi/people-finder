@@ -34,3 +34,8 @@ http://people-finder.googlecode.com/svn/trunk/US3.png
       * Display - Jacob
       * User can either accept or ignore a map request, if accepted the accepting phone will send a notification(via hidden text) to the first phone and both phones will go to the map activity. -Jason
 http://people-finder.googlecode.com/svn/trunk/US4.png
+
+= 5th Build Cycle =
+ * User can now use compass with proximity indicator
+ * The app should be a little more easy on the eyes
+http://people-finder.googlecode.com/svn/trunk/US5.png
