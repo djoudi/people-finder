@@ -257,10 +257,10 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 
 	public void onSensorChanged(SensorEvent event) {
 		
-		double myX 		= mapFinderActivity.myLat;
-		double myY 		= mapFinderActivity.myLong;
-		double yourX	= mapFinderActivity.yourLat;
-		double yourY	= mapFinderActivity.yourLong;
+		double myX 		= mapFinderActivity.myLong;
+		double myY 		= mapFinderActivity.myLat;
+		double yourX	= mapFinderActivity.yourLong;
+		double yourY	= mapFinderActivity.yourLat;
 		double diffX;
 		double diffY;
 		double angle = 0;
