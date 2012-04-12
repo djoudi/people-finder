@@ -15,7 +15,6 @@ public class ReceiveSMS extends BroadcastReceiver
 	{
 	public static final String tag = ReceiveSMS.class.getName();
 	
-	@Override
 	    public void onReceive(Context context, Intent intent) 
 	    {
 			this.abortBroadcast(); 
@@ -45,27 +44,28 @@ public class ReceiveSMS extends BroadcastReceiver
 	            temp = str.split(delimiter);
 	            if(temp[0].equals("PF")){
 	            	if(temp[1].equals("REQUEST")){
-	            		Log.e(tag, "in Request block");
-		            	//Toast.makeText(context, temp[2], Toast.LENGTH_LONG).show();
+	            		//Log.e(tag, "in Request block");
+		            	//Toast.makeText(context, temp[4], Toast.LENGTH_LONG).show();
 			            Intent i = new Intent(context, DialogActivity.class);  
 			            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
-			            i.putExtra("ID_RNUM", temp[2] + ":" + temp[3]);
+			            i.putExtra("ID_RNUM", temp[2] + ":" + temp[3] + ":" + temp[4] );
 			            //i.putExtra("RETURN_NUMBER", temp[3]);
 			            //Toast.makeText(context, str, Toast.LENGTH_LONG).show();
 			            context.startActivity(i);
 	            	}
 	            	else if(temp[1].equals("ACCEPT_R")){
-	            		 Intent i = new Intent(context, mapFinderActivity.class);  
-				         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				         context.startActivity(i);
+	            		Log.e(tag, "in Accept block");
+	            		 Intent i_map = new Intent(context, mapFinderActivity.class);  
+	            		 i_map.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				         context.startActivity(i_map);
 	            		//Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
 	    	        	//startActivity(i);
 	            	}
 	            
 	            	else if(temp[1].equals("IGNORE_R")){
-	            		 Intent i = new Intent(context, PeopleFinderActivity.class);  
-				         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				         context.startActivity(i);
+	            		 Intent i_original = new Intent(context, PeopleFinderActivity.class);  
+	            		 i_original.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				         context.startActivity(i_original);
 	            	}
 	             }
 	            else{
@@ -76,11 +76,6 @@ public class ReceiveSMS extends BroadcastReceiver
 	            Log.e(tag, "after activity launch");
 
 	        }
-	     
-	        	
-	        
-
-	    }                         
-	    
+	    }                            
 	}
 	 
