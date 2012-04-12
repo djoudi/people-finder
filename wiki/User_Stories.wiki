@@ -38,5 +38,5 @@ http://people-finder.googlecode.com/svn/trunk/US4.png
 = 5th Build Cycle =
  * User can now use compass with proximity indicator
  * The app should be a little more easy on the eyes
- * The user will be able to go to an augmented reality activity
+ * The user will be able to go to an augmented reality activity -Jason(not able to get augmented reality implemented, but the camera view is launched)
 http://people-finder.googlecode.com/svn/trunk/US5.png
