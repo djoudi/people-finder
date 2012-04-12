@@ -393,6 +393,18 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 				
 			});
 			
+			builder.setNeutralButton("Camera\nView", new DialogInterface.OnClickListener() {
+
+				public void onClick(DialogInterface dialog, int which) {
+					
+					dialog.cancel();
+					//Do something else here.
+					Intent i_camera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+					startActivity(i_camera);
+				}
+				
+			});
+			
 			dialog = builder.create();
 			dialog.show();
 			break;
