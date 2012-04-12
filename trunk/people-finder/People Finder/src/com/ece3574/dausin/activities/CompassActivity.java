@@ -41,6 +41,10 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
 	
+	private double[]coordBufferX;
+	private double[]coordBufferY;
+	private int bufferElement_;
+	
 	public static float degree = 0;
 	public static float prevDegree = 0;
 	SensorManager sensorManager;
@@ -65,6 +69,14 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		/*---------------------------------------------------------JACOB*/
 		// Initialize Arrow Picture
 		/*---------------------------------------------------------JACOB*/
+		//fill buffer with default 0
+		coordBufferX = new double[10];
+		coordBufferY = new double[10];
+		for(int i = 0; i<10; ++i){
+			coordBufferX[i] = 0;
+			coordBufferY[i] = 0;
+		}
+		
         myView = (ImageView) findViewById(R.id.arrowPic);
         
         bmpOriginal = BitmapFactory.decodeResource(this.getResources(), R.drawable.arrow);
@@ -108,16 +120,30 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 			
 			public void run() {
 				
-				mapFinderActivity.myLat = loc.getLatitude();
-				mapFinderActivity.myLong= loc.getLongitude();
 				
-				final String coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
-				Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
+				if(bufferElement_==10)
+					bufferElement_ = 0;
+				coordBufferY[bufferElement_] = loc.getLatitude();
+				coordBufferX[bufferElement_] = loc.getLongitude();
+				++bufferElement_;
+				
+				mapFinderActivity.myLat=0;
+				mapFinderActivity.myLong=0;
+				for(int i =0; i<10; ++i){
+					mapFinderActivity.myLat  = mapFinderActivity.myLat+coordBufferY[i];
+					mapFinderActivity.myLong = mapFinderActivity.myLong+coordBufferX[i];
+					
+					//Log.e("array:", "x: "+coordBufferX[i]+" y: "+coordBufferY[i]);
+				}
+				
+				
+				final String coordinates = mapFinderActivity.myLat+"|"+mapFinderActivity.myLong; //creates coordinates string seperated by |
+				//Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
 				
 				///////////////////////////
 				//PUSHING STRING
 				///////////////////////////
-				/*Map<String, String> args_ = new HashMap<String, String>();
+				Map<String, String> args_ = new HashMap<String, String>();
 				args_.put("app", coordinates); //posts coordinates to app
 				args_.put("uid", Globals.uid);
 
@@ -138,7 +164,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 						
 					}
 					
-				});*/
+				});
 				
 				
 				////////////////////////////
@@ -151,7 +177,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 				//putMap was changed to static in PeopleFinderActivity to access it here.
 				//app friends was made public to be used in here
 				
-				/*String accountName = PeopleFinderActivity.currentTag; //since apparently we change currentTag below
+				String accountName = PeopleFinderActivity.currentTag; //since apparently we change currentTag below
 				putMap = new HashMap<String, String>();
 				putId = accountName;
 				PeopleFinderActivity.currentTag = "the";
@@ -197,7 +223,7 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 						
 					}
 					
-				});*/
+				});
 				 
 				/////////////////////////////
 				//End Pull String. It should exist in XML Parser. I dont' understand how to access it though.
@@ -261,6 +287,8 @@ public class CompassActivity extends Activity implements SensorEventListener, Lo
 		double myY 		= mapFinderActivity.myLat;
 		double yourX	= mapFinderActivity.yourLong;
 		double yourY	= mapFinderActivity.yourLat;
+		
+		
 		double diffX;
 		double diffY;
 		double angle = 0;
