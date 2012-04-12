@@ -30,6 +30,10 @@ public class TheItemizedOverlay extends ItemizedOverlay {
 		return mOverlays.size();
 	}
 	
+	public void removeOverlay(){
+		mOverlays.remove(0);
+	}
+	
 	public void addOverlay(OverlayItem overlay){
 		mOverlays.add(overlay);
 		populate();
