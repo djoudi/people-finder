@@ -36,3 +36,9 @@ Lastly, pressing "Add a friend" will bring up a list of all of your friends.  Pr
    - Long press on facebook picture
    - Click on facebook picture and select "compass" option
 - When you hit "accept" when you get a request both phones will go to the map activity. If you hit "ignore" both phones will go back to the main activity
+
+= *Build Cycle FIve Notes:* =
+
+- Did not finish augmented reality userstory
+  - I never got to be able to overlay an image on the camera view, but A camera view was implemented
+  - To launch the camera view, long press on any f your facebook friend and click the camera view button
