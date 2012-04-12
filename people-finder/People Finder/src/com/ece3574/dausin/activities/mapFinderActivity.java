@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.HttpResponse;
 
 import com.ece3574.dausin.R;
@@ -52,7 +51,6 @@ public class mapFinderActivity extends MapActivity {
 	//Added for Jake's functions
 	private MapView mapView;
 	private Drawable drawable, tDrawable;
-	private List<Overlay> mapOverlays;
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
 	private String putId, theirGPS, theirLat, theirLong;
@@ -68,58 +66,45 @@ public class mapFinderActivity extends MapActivity {
 	
 	public static final int MICRO_DEGREE = 100000;
 	
+	private static OverlayItem overlayitem;
+	private static TheItemizedOverlay itemizedoverlay;
+	private static List<Overlay> mapOverlays;
+	
+	DifferentLocationListener locClass;
+	
+    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
         
-        // Creates the MapView for the Activity
-    	mapView = (MapView) findViewById(R.id.mapview);
-    	mapOverlays = mapView.getOverlays();
+        MapView mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
-        /* Get picture from facebook to put on map*/
-
-		//Jake's added onCreate method
-		mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        LocationListener mlocListener = new DifferentLocationListener();
-        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 30000, 0, mlocListener); //checks ofr updates every 30 seconds
-        //end Jake's added onCreate
+        mapOverlays = mapView.getOverlays();
+        Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
+        itemizedoverlay = new TheItemizedOverlay(drawable, this);
         
-        Criteria criteria = new Criteria();
-		provider = mlocManager.getBestProvider(criteria, false);
-		Location location = mlocManager.getLastKnownLocation(provider);
+        GeoPoint point = new GeoPoint(19240000,-99120000);
+        overlayitem = new OverlayItem(point, "F YEAH", "AHM IN MESCO BEECH!");
+        
+        itemizedoverlay.addOverlay(overlayitem);
+        mapOverlays.add(itemizedoverlay);
+        
+        point = new GeoPoint(18230000, -88320000);
+        overlayitem = new OverlayItem(point, "LUV ME", "AHM MESCAN");
+        itemizedoverlay.removeOverlay(); // Removes previous marker
+        itemizedoverlay.addOverlay(overlayitem);
+        //itemizedoverlay.removeOverlay();
+        mapOverlays.add(itemizedoverlay); // Populates the map with overlays
+        
+        // Handling GPS Stuff
 
-		//Your last known Location.
-		if (location == null){
-			theirLatInt = 19240000;
-			theirLongInt = -99120000;
-		}else{
-			myLat = location.getLatitude() * MICRO_DEGREE;
-			myLong = location.getLongitude() * MICRO_DEGREE;
-			theirLatInt = (int) (location.getLatitude() * 1E6);
-			theirLongInt = (int) (location.getLongitude() * 1E6);
-		}
-		
-		try {
-			drawable = drawableFromUrl(PeopleFinderActivity.getPractice(Globals.uid));
-			tDrawable = drawableFromUrl(PeopleFinderActivity.getPractice(PeopleFinderActivity.currentTag));
-	        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, this);
-	        
-	        GeoPoint point = new GeoPoint(theirLatInt, theirLongInt);
-	        OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
-	    
-	        itemizedoverlay.addOverlay(overlayitem);
-	        mapOverlays.add(itemizedoverlay);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-
-
+    	
+   		// Should be used to call functions and crap
+        locClass = new DifferentLocationListener(this.getApplicationContext());
+        //locClass.doInitStuff();
     }
-    
     /* Function to convert URL images to drawables */
     public static Drawable drawableFromUrl(String url) throws IOException {
         Bitmap x;
@@ -132,6 +117,18 @@ public class mapFinderActivity extends MapActivity {
         return new BitmapDrawable(x);
     }
 
+    /*-----------------------------------------------------------JACOB*/
+    // Method to change the markers on the map when the location is 
+    // updated by the GPS.
+    /*-----------------------------------------------------------JACOB*/
+    public static void changeMapMarkers(GeoPoint coordinates){
+    	Log.e("Jacob","Entered changeMapMarkers method!");
+    	overlayitem = new OverlayItem(coordinates, "Position", "Yeap");
+    	itemizedoverlay.removeOverlay();
+    	itemizedoverlay.addOverlay(overlayitem);
+    	mapOverlays.add(itemizedoverlay);
+    }
+    /*-----------------------------------------------------------JACOB*/
     
     // Don't display routes on the map
     @Override
@@ -152,9 +149,35 @@ public class mapFinderActivity extends MapActivity {
 			GeoPoint p1 = new GeoPoint ((int) (loc.getLatitude() * 1E6), (int) (loc.getLongitude() * 1E6));
 			return p1;
 		}
+		
+		private LocationManager locationManager;
+		private String provider;
+		
+		public DifferentLocationListener(Context mContext){
+			Log.e("Jacob", "Called FindLocation Constructor");
+					
+			// Get the location manager
+	    	locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+	    	// Define the criteria how to select the location provider -> use
+	    	// default
+	    	Criteria criteria = new Criteria();
+	    	provider = locationManager.getBestProvider(criteria, false);
+	    	Location location = locationManager.getLastKnownLocation(provider);
+	   		// Initialize the location fields
+	   		if (location != null) {
+	   			System.out.println("Provider " + provider + " has been selected.");
+	   			int lat = (int) (location.getLatitude());
+	   			int lng = (int) (location.getLongitude());
+	   		}
+		}
+		
 		//@Override
 		public void onLocationChanged (final Location loc){
-
+			Log.e("Jacob", "running method: onLocationChanged");
+			int lat = (int) (loc.getLatitude() * 1E6);
+			int lng = (int) (loc.getLongitude() * 1E6);
+			GeoPoint point = new GeoPoint(lat, lng);
+			changeMapMarkers(point);
 			handler.post(new Runnable() {
 				
 				public void run() {
