@@ -105,6 +105,12 @@ public class mapFinderActivity extends MapActivity {
         locClass = new DifferentLocationListener(this.getApplicationContext());
         //locClass.doInitStuff();
     }
+    
+	protected void onResume() {
+		super.onResume();
+		locClass.doInitStuff();
+	}
+    
     /* Function to convert URL images to drawables */
     public static Drawable drawableFromUrl(String url) throws IOException {
         Bitmap x;
@@ -276,8 +282,19 @@ public class mapFinderActivity extends MapActivity {
 								theirLongInt = (int) yourLong;
 								//MAKE THEIR NEW GEOPOINT HERE.
 								
-								makeGeoPoint(myLatInt, myLongInt, Globals.uid, theirLatInt, theirLongInt, PeopleFinderActivity.currentTag);
-								updateProximity(theirLatInt, theirLongInt);
+								//--------------------------------------------------------------JACOB
+								// Making a GeoPoint should be taken care of by the
+								// changeMapMarkers method
+								//--------------------------------------------------------------JACOB
+								//makeGeoPoint(myLatInt, myLongInt, Globals.uid, theirLatInt, theirLongInt, PeopleFinderActivity.currentTag);
+								//--------------------------------------------------------------JACOB
+								
+								//--------------------------------------------------------------JACOB
+								// Removed updateProximity call to test map Marker movement
+								//--------------------------------------------------------------JACOB
+								//updateProximity(theirLatInt, theirLongInt);
+								//--------------------------------------------------------------JACOB
+								
 								//makeToast(response);
 								//friendsLayout_.removeAllViews();
 								//parseAppFriends();
@@ -317,6 +334,11 @@ public class mapFinderActivity extends MapActivity {
 		
 		public void onProviderEnabled(String provider) {
 			Toast.makeText( getApplicationContext(), "GPS Enabled", Toast.LENGTH_SHORT).show();
+		}
+		
+		public void doInitStuff(){
+			Log.e("Jacob", "running method: doInitStuff");
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
 		}
 		
 		public void onStatusChanged(String provider, int status, Bundle extras) {
