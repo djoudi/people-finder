@@ -3,6 +3,7 @@
  */
 package com.ece3574.dausin.activities;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -673,6 +674,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		for(int i=0; i<appFriends.size(); i++) {
 			LinearLayout appFriendLayout_ = new LinearLayout(getBaseContext());
     	    URL img_value = null;
+    	   
     	    try {
 				img_value = new URL("http://graph.facebook.com/"+appFriends.get(i).id+"/picture?type=square");
 			} catch (MalformedURLException e) {
@@ -738,7 +740,21 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     	    	// This actually is the image that you use
     	    Bitmap mIcon1 = null;
 			try {
-				mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream());
+				//mine is a problem
+				BitmapFactory.Options o = new BitmapFactory.Options();
+				o.inJustDecodeBounds = true;
+				BitmapFactory.decodeStream(null);
+				
+				final int REQUIRED_SIZE = 70;
+				int scale = 1;
+				while(o.outWidth/scale/2 >=REQUIRED_SIZE && o.outHeight/scale/2 >=REQUIRED_SIZE)
+					scale*=2;
+				
+				BitmapFactory.Options o2 = new BitmapFactory.Options();
+				o2.inSampleSize = scale;
+				
+				mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream(), null, o2);
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
