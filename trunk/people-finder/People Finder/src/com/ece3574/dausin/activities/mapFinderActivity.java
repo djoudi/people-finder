@@ -17,6 +17,7 @@ import com.ece3574.dausin.appengine.XMLParser;
 import com.ece3574.dausin.async.HttpCallback;
 import com.ece3574.dausin.async.HttpUtils;
 import com.ece3574.dausin.facebook.BaseRequestListener;
+import com.ece3574.dausin.global.Friend;
 import com.ece3574.dausin.global.Globals;
 import com.ece3574.dausin.maps.TheItemizedOverlay;
 
@@ -44,6 +45,15 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 import com.ece3574.dausin.async.HttpUtils;
+
+//--------------------------------------------------------------JACOB
+// TODO: 
+// -> 2nd phone has problems with updating the map (details in 
+// logcat)
+// -> Put 2 markers on map (finder and person to be found)
+// -> Change marker picture to be facebook picture instead of goofy
+// android thing
+//--------------------------------------------------------------JACOB
 
 public class mapFinderActivity extends MapActivity {
     /** Called when the activity is first created. */
@@ -82,7 +92,21 @@ public class mapFinderActivity extends MapActivity {
         mapView.setBuiltInZoomControls(true);
         
         mapOverlays = mapView.getOverlays();
-        Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
+        
+        //-------------------------------------------------JACOB
+        // Image is set here
+        //-------------------------------------------------JACOB
+        for(Friend f : PeopleFinderActivity.appFriends){
+        	if(f.id == PeopleFinderActivity.currentTag){
+        		try {
+					drawable = drawableFromUrl(f.pictureURL);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
+        }
+        //-------------------------------------------------JACOB
+        //Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
         itemizedoverlay = new TheItemizedOverlay(drawable, this);
         
         GeoPoint point = new GeoPoint(19240000,-99120000);
@@ -212,7 +236,6 @@ public class mapFinderActivity extends MapActivity {
 				        itemizedoverlay.addOverlay(overlayitem);
 				        mapOverlays.add(itemizedoverlay);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}*/
 					
@@ -226,17 +249,14 @@ public class mapFinderActivity extends MapActivity {
 					HttpUtils.get().doPost("http://www.peoplefinderredevs.appspot.com/" + "uidpackagepairs", args_, new HttpCallback() {
 
 						public void onResponse(HttpResponse resp) {
-							// TODO Auto-generated method stub
 							try {											
 								Log.i("MapActivity", "Succesful post of " + coordinates + " " + HttpUtils.get().responseToString(resp));
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 
 						}
 						public void onError(Exception e) {
-							// TODO Auto-generated method stub
 							
 						}
 						
@@ -300,7 +320,6 @@ public class mapFinderActivity extends MapActivity {
 								//parseAppFriends();
 								//progressDialog.dismiss();
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							
