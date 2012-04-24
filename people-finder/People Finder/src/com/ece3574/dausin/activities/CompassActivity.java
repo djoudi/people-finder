@@ -145,45 +145,19 @@ public class CompassActivity extends Activity implements SensorEventListener,
 		// CAMERA
 
 		// Hide the window title.
-		Log.e("onCreate", "cameraBegin");
+		Log.d("onCreate", "cameraBegin");
 
 		// Create a RelativeLayout container that will hold a SurfaceView,
 		// and set it as the content of our activity.
-		Log.e("onCreate", "beforePreview");
 		mPreview = new Preview(this);
-		
-		LinearLayout bar = (LinearLayout)findViewById(R.id.cameraContainer);
+		//setContentView(mPreview);
+		FrameLayout bar = (FrameLayout)findViewById(R.id.cameraContainer);
 		//foo.addView(bar);
 		//setContentView(foo);
 		bar.addView(mPreview);
+		
+		bar.setVisibility(View.VISIBLE);
 
-		Log.e("onCreate", "beforeCreateButton");
-
-		// add buttons to bar--make bar transparent
-		// TODO
-
-		/*
-		 * *
-		 * 
-		 * 
-		 * do some sort of frame add preview to the frame layout transparent
-		 * linear layout ontop of this camera
-		 */
-		Log.e("onCreate", "beforeNumberOfCameras");
-		// Find the total number of cameras available
-		// numberOfCameras = Camera.getNumberOfCameras();
-
-		// Find the ID of the default camera
-		// CameraInfo cameraInfo = new CameraInfo();
-		// Log.e("onCreate", "beforeLoop");
-		// for (int i = 0; i < numberOfCameras; i++) {
-		// Camera.getCameraInfo(i, cameraInfo);
-		// if (cameraInfo.facing == CameraInfo.CAMERA_FACING_BACK) {
-		// defaultCameraId = i;
-		// }
-		// }
-		// end camera
-		Log.e("onCreate", "end");
 	}
 
 	public void onLocationChanged(final Location loc) {
@@ -362,8 +336,12 @@ public class CompassActivity extends Activity implements SensorEventListener,
 		// camera
 		// Open the default i.e. the first rear facing camera.
 		mCamera = Camera.open();
+		mCamera.setDisplayOrientation(90);
+		
 		// cameraCurrentlyLocked = defaultCameraId;
 		mPreview.setCamera(mCamera);
+		
+	
 		// end camera
 	}
 
@@ -474,7 +452,7 @@ public class CompassActivity extends Activity implements SensorEventListener,
 					intAngle = orientation - intAngle;
 					intAngle = 360 - intAngle;
 				}
-				Log.d("Difference: ", (" " + intAngle));
+				//Log.d("Difference: ", (" " + intAngle));
 
 				degree = intAngle;
 
