@@ -464,9 +464,10 @@ public class CompassActivity extends Activity implements SensorEventListener,
 						.rotate(degree - prevDegree,
 								bmpOriginal.getWidth() / 2,
 								bmpOriginal.getHeight() / 2);
-
-				tempCanvas.drawBitmap(bmpOriginal, 0, 0, null);
-				myView.setImageBitmap(bmResult);
+				
+				//tempCanvas.drawBitmap(bmpOriginal, 0, 0, null);
+				//myView.setImageBitmap(bmResult);
+				myView.draw(tempCanvas);
 				prevDegree = degree;
 			}
 		};
@@ -609,6 +610,8 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		if (mCamera != null) {
 			mCamera.stopPreview();
 		}
+		//Toast.makeText(this, Float.toString(degree), Toast.LENGTH_LONG).show();
+		
 	}
 
 	private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
