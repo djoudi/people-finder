@@ -39,10 +39,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.telephony.SmsManager;
 //import android.telephony.SmsMessage;
 import android.util.Log;
@@ -75,12 +79,16 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     private String profileID, selectedId, profileName;
     private TextView profileName_;
     private Boolean firstTime_, firstDone_;
+    private String phoneNumber;
+    private Button contact_button;
+	private EditText phoneNumber_;
 	AsyncFacebookRunner mAsyncRunner;
     
     private static final int SHORT_PRESS_ALERT = 1;
     private static final int LONG_PRESS_ALERT = 2;
     private static final int FRIEND_PRESS_ALERT = 3;
     private static final int MAP_REQUEST_ALERT = 4;
+    private static final int PICK_CONTACT = 100;
     String numberFromCDialog;
     static int breakCustomLoop = 0;
     static String currentTag;
@@ -172,7 +180,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
         
     }
     
-
+    
     
 	///////////////////
     //DELICIOUS TOAST//
@@ -186,6 +194,48 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	//TEXT MESSAGE STUFF//
 	//////////////////////
 	
+	/////////////////////////////////
+	//Receiving number from Dialog!//
+	/////////////////////////////////
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.e("Activity Recived", "recived from activity");
+		super.onActivityResult(requestCode, resultCode, data);
+		  if (requestCode == PICK_CONTACT)
+		  {
+			if(resultCode == RESULT_OK)
+		   {
+				Log.e("Activity Recived", "resultcode is ok");
+				Uri contentUri = data.getData();
+				String contactId = contentUri.getLastPathSegment();
+				Cursor cursor = getContentResolver().query(  
+				        Phone.CONTENT_URI, null,  
+				        Phone._ID + "=?",       // < - Note, not CONTACT_ID!
+				        new String[]{contactId}, null);
+				startManagingCursor(cursor);
+	            Boolean numbersExist = cursor.moveToFirst();            
+	            int phoneNumberColumnIndex = cursor.getColumnIndex(Phone.NUMBER);            
+	            phoneNumber = "";
+	            Log.e("Activity Recived", "resultcode is here");
+	            while (numbersExist) 
+	            {
+	              phoneNumber = cursor.getString(phoneNumberColumnIndex);
+	           	  phoneNumber = phoneNumber.trim();  
+	              numbersExist = cursor.moveToNext();
+	            }
+	            Log.e("Activity Recived", "got the phonenumber");
+				stopManagingCursor(cursor);			
+			    if (!phoneNumber.equals("")) 
+			    {
+				  //setPhoneNumber(phoneNumber);
+			    	phoneNumber_.setText(phoneNumber);
+				} // phoneNumber != ""
+			} // Result Code = RESULT_OK
+		  } // Request Code = REQUEST_CONTACTPICER 	
+	}
+
+
+
 	private  String makeMessage(){
 		if(Globals.uid != null){
 			return "PF:" + "REQUEST:" + Globals.uid + ":" + Globals.name;
@@ -194,24 +244,45 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			return "";
 		}
 	}
+	
 
 	private void findFriend(){
+		Log.e("Get Number", "get number begin");
 		AlertDialog.Builder builder =new AlertDialog.Builder(this);
 		AlertDialog alertDialog = builder.create();
-
+		
+		Log.e("Get Number", "get layoutinflater begin");
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View layout = inflater.inflate(R.layout.customdialog,
 		                               (ViewGroup) findViewById(R.id.layout_root));
+		
 
 		final TextView text = (TextView) layout.findViewById(R.id.textView1);
 		text.setText("This person's phone number was not found, please enter your facebook friends number:");
 
-		final EditText edit = (EditText) layout.findViewById(R.id.txtPhoneNo);
+		phoneNumber_ = (EditText) layout.findViewById(R.id.txtPhoneNo);
 		//String fone = edit.getText().toString();
+		
+		Log.e("Get Number", "finding button");
+		contact_button =  (Button) findViewById(R.id.contact_pick); //reference to button in XML file
+		//contact_button.setText("Find number\nin contacts");
+		Log.e("Get Number", "starting onclckListener");
+        //if(contact_button != null){
+			//contact_button.setOnClickListener(new View.OnClickListener(){
+        	
+        	//	public void onClick(View v){
+        	//		Intent intentContact = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI );
+        	//		startActivityForResult(intentContact, PICK_CONTACT);
+        	//	}
+        	//});
+        //}
+        //else{
+    		//Log.e("Get Number", "contact button is null");
+        //}
 		
 		builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() { 
 	        public void onClick(DialogInterface dialog, int whichButton) { 
-	           String fone = edit.getText().toString(); 
+	           String fone = phoneNumber_.getText().toString(); 
 	            //Toast.makeText(getApplicationContext(), fone + "  :is the number I'm requesting ", Toast.LENGTH_LONG).show();
 	            
 	            String requestMessage = makeMessage();
@@ -226,6 +297,33 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	            
 	        } 
 	        }); 
+		/*builder.setNeutralButton("Find in\ncontacts", new DialogInterface.OnClickListener() { 
+	        public void onClick(DialogInterface dialog, int whichButton) { 
+	        	//startActivity(i_camera);
+				// Add listener so your activity gets called back upon completion of action,
+				// in this case with ability to get handle to newly added contact
+				//myActivity.addActivityListener(someActivityListener);
+
+	        	//  Intent intent = new Intent(Intent.ACTION_PICK, 
+	        	//           ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+	        	//  startActivityForResult(intent, REQUEST_CONTACTPICKER);
+	        	
+				Intent intentContact = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI );
+				//intentContact.setType(ContactsContract.Contacts.CONTENT_TYPE);
+
+				// Just two examples of information you can send to pre-fill out data for the
+				// user.  See android.provider.ContactsContract.Intents.Insert for the complete
+				// list.
+				//intentContact.putExtra(ContactsContract.Intents.Insert.NAME, "person's Name");
+				//intentContact.putExtra(ContactsContract.Intents.Insert.PHONE, "some Phone Number");
+
+				// Send with it a unique request code, so when you get called back, you can
+				// check to make sure it is from the intent you launched (ideally should be
+				// some public static final so receiver can check against it)
+				startActivityForResult(intentContact, PICK_CONTACT);
+	        
+	        } 
+	        }); */
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { 
 	        public void onClick(DialogInterface dialog, int whichButton) { 
 	        	dialog.cancel();
@@ -235,67 +333,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		builder.setView(layout);
 		alertDialog = builder.create();
 		builder.show();
-		
-		
-		/*
-		 * //for (int i=0; i< appFriends.size(); i++){
-			//if(appFriends.get(i).id == currentTag)
-			//{
-					//String temp = appFriends.get(i).phoneNumber;
-					//if(temp == null)
-					//{
-
-						final Dialog dialog = new Dialog(PeopleFinderActivity.this);
-
-						dialog.setContentView(R.layout.customdialog);
-						dialog.setTitle("Phone number not found");
-						dialog.setCancelable(true);
-
-						TextView text = (TextView) dialog.findViewById(R.id.textView1);
-						text.setText("Please enter the phone number of your facebook friend:");
-					
-
-					
-						Button button1 = (Button) dialog.findViewById(R.id.button1);
-						button1.setOnClickListener(new OnClickListener(){
-							public void onClick(View v){
-								EditText edit = (EditText) dialog.findViewById(R.id.txtPhoneNo);
-								String fone = edit.getText().toString();
-								
-								Toast.makeText(getApplicationContext(), fone + "  :is the number I'm requesting ", Toast.LENGTH_SHORT).show();
-								
-								String requestMessage = makeMessage();
-								numberFromCDialog = fone;
-								
-								SmsManager sms = SmsManager.getDefault();
-								sms.sendTextMessage(fone, null, requestMessage, null, null);
-																
-								finish();
-							}
-						});
-					
-						Button button2 = (Button) dialog.findViewById(R.id.button2);
-						button1.setOnClickListener(new OnClickListener(){
-							public void onClick(View v){
-							
-								finish();
-	
-							}
-						});
-					
-						dialog.show();
-
-					//}
-					//else{
-					//	numberFromCDialog = appFriends.get(i).phoneNumber;
-					//}
-
-				
-					return;*/
-			//}
-		//}
-		//numberFromCDialog = "";
-		//return;
 	}
 	
 	
@@ -400,8 +437,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					
 					dialog.cancel();
 					//Do something else here.
-					Intent i_camera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-					startActivity(i_camera);
+					Intent i_camera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);					
 				}
 				
 			});
@@ -459,6 +495,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 			break;
 		}
 	}
+	
 	
 	/////////////////////
 	//WALLPOST RESPONSE//
