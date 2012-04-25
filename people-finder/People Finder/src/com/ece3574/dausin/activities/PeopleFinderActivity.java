@@ -74,7 +74,8 @@ import android.widget.Toast;
 public class PeopleFinderActivity extends Activity implements HttpCallback{
     /** Called when the activity is first created. */
 	
-	private HashMap<String, String> putMap, ParsedXML, Numbers;
+	private HashMap<String, String> putMap, ParsedXML;
+	private HashMap<String, String> Numbers = new HashMap<String, String>();
 	private ImageView profilePhoto, addFriendPhoto;
     private ArrayList<Friend> friends = new ArrayList<Friend>();
     static ArrayList<Friend> appFriends = new ArrayList<Friend>();
@@ -179,7 +180,9 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					FileReader reader = new FileReader(f);
 					BufferedReader in = new BufferedReader(reader);
 					String inString = null;
-					Numbers.clear();
+					if(Numbers.isEmpty()){
+						Numbers.clear();
+					}
 					while((inString = in.readLine()) != null){
 						String nUID, nNumber;
 						nNumber = inString.substring(inString.indexOf(","));
@@ -325,7 +328,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 
 	private void findFriend(){
 		
-		if(Numbers.containsKey(selectedId)){
+		if(Numbers.get(selectedId) != null){
 	           String fone = Numbers.get(selectedId);
 
 	            
