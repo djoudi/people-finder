@@ -42,4 +42,7 @@ http://people-finder.googlecode.com/svn/trunk/US4.png
 http://people-finder.googlecode.com/svn/trunk/US5.png
 
 = Final Build Cycle =
- *If a facebook friends phone number is available through your phonebook or facebook,the user will not have to enter the phone number of that friend.
+ * If a facebook friends phone number is available through your phone-book, the user will not have to enter the phone number of that friend. -Jason
+ * Augmented reality(compass overlay on camera view). -Jake
+ * Both people will show up on the map with the correct locations. -Jacob
+ * If you have already searched for someone in the app, it will remeber that person's number.  -Kyle  
