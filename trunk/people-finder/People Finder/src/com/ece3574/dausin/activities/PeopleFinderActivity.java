@@ -365,7 +365,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		//String fone = edit.getText().toString();
 		
 		Button contact_button =  (Button) layout.findViewById(R.id.contact_pick); //reference to button in XML file
-		//contact_button.setText("Find number\nin contacts");
+		contact_button.setText("Find number\nin contacts");
 
         //if(contact_button != null){
 			contact_button.setOnClickListener(new View.OnClickListener(){
