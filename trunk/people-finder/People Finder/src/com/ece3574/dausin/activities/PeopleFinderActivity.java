@@ -74,6 +74,7 @@ import android.widget.Toast;
 public class PeopleFinderActivity extends Activity implements HttpCallback{
     /** Called when the activity is first created. */
 	
+	private static String saveResponseString;
 	private HashMap<String, String> putMap, ParsedXML;
 	private HashMap<String, String> Numbers = new HashMap<String, String>();
 	private ImageView profilePhoto, addFriendPhoto;
@@ -112,6 +113,14 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	boolean mExists = false;
 	boolean mWrite = false;
 	
+
+    static public String getResponseString(){
+    	if (saveResponseString != null)
+    		return saveResponseString;
+    	else
+    		return "Problems!";
+    }
+    
 	
 	String path = null;
 	
@@ -777,6 +786,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
             try {
                 // process the response here: executed in background thread
 
+            	saveResponseString = response;
                 Log.d("User Request", "Response: " + response.toString());
                 JSONObject json = Util.parseJson(response);
                 profileName = json.getString("name");
