@@ -90,7 +90,6 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     private TextView profileName_;
     private Boolean firstTime_, firstDone_;
     private String phoneNumber;
-    private Button contact_button;
 	private EditText phoneNumber_;
 	AsyncFacebookRunner mAsyncRunner;
 	
@@ -350,10 +349,10 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		}
 		else{
 
+
 		AlertDialog.Builder builder =new AlertDialog.Builder(this);
 		AlertDialog alertDialog = builder.create();
 		
-		Log.e("Get Number", "get layoutinflater begin");
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View layout = inflater.inflate(R.layout.customdialog,
 		                               (ViewGroup) findViewById(R.id.layout_root));
@@ -365,22 +364,23 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		phoneNumber_ = (EditText) layout.findViewById(R.id.txtPhoneNo);
 		//String fone = edit.getText().toString();
 		
-		Log.e("Get Number", "finding button");
-		contact_button =  (Button) findViewById(R.id.contact_pick); //reference to button in XML file
+		Button contact_button =  (Button) layout.findViewById(R.id.contact_pick); //reference to button in XML file
 		//contact_button.setText("Find number\nin contacts");
-		Log.e("Get Number", "starting onclckListener");
+
         //if(contact_button != null){
-			//contact_button.setOnClickListener(new View.OnClickListener(){
+			contact_button.setOnClickListener(new View.OnClickListener(){
         	
-        	//	public void onClick(View v){
-        	//		Intent intentContact = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI );
-        	//		startActivityForResult(intentContact, PICK_CONTACT);
-        	//	}
-        	//});
+        		public void onClick(View v){
+        			Intent intentContact = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI );
+        			startActivityForResult(intentContact, PICK_CONTACT);
+        		}
+        	});
         //}
         //else{
     		//Log.e("Get Number", "contact button is null");
         //}
+          
+         
 		
 		builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() { 
 	        public void onClick(DialogInterface dialog, int whichButton) { 
@@ -428,7 +428,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	            
 	        });
 
-		/*builder.setNeutralButton("Find in\ncontacts", new DialogInterface.OnClickListener() { 
+/*		builder.setNeutralButton("Find in\ncontacts", new DialogInterface.OnClickListener() { 
 	        public void onClick(DialogInterface dialog, int whichButton) { 
 	        	//startActivity(i_camera);
 				// Add listener so your activity gets called back upon completion of action,
@@ -454,7 +454,8 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 				startActivityForResult(intentContact, PICK_CONTACT);
 	        
 	        } 
-	        }); */
+	        }); 
+	       */
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { 
 	        public void onClick(DialogInterface dialog, int whichButton) { 
 	        	dialog.cancel();
