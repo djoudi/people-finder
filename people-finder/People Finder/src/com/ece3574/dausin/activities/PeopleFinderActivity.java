@@ -3,8 +3,15 @@
  */
 package com.ece3574.dausin.activities;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,6 +51,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
@@ -66,7 +74,7 @@ import android.widget.Toast;
 public class PeopleFinderActivity extends Activity implements HttpCallback{
     /** Called when the activity is first created. */
 	
-	private HashMap<String, String> putMap, ParsedXML;
+	private HashMap<String, String> putMap, ParsedXML, Numbers;
 	private ImageView profilePhoto, addFriendPhoto;
     private ArrayList<Friend> friends = new ArrayList<Friend>();
     static ArrayList<Friend> appFriends = new ArrayList<Friend>();
@@ -83,16 +91,28 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
     private Button contact_button;
 	private EditText phoneNumber_;
 	AsyncFacebookRunner mAsyncRunner;
+	
+	//private ArrayList<String> Numbers = new ArrayList<String>();
     
     private static final int SHORT_PRESS_ALERT = 1;
     private static final int LONG_PRESS_ALERT = 2;
     private static final int FRIEND_PRESS_ALERT = 3;
     private static final int MAP_REQUEST_ALERT = 4;
+
+    private static final String fileFolder = "/PeopleFinder/";
+    private static final String fileName = "Numbers.txt";
+
     private static final int PICK_CONTACT = 100;
     String numberFromCDialog;
     static int breakCustomLoop = 0;
     static String currentTag;
     public static int ReceiveRequestFlag;
+    
+	boolean mExists = false;
+	boolean mWrite = false;
+	
+	
+	String path = null;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,6 +150,63 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	    profileID = "";
 	    
 	    //End of Setting up GUI
+	    
+	    //Initialization of the SDCARD and corresponding number file//
+	    
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+		    // We can read and write the media
+		    mExists = mWrite = true;
+		} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+		    // We can only read the media
+		    mExists = true;
+		    mWrite = false;
+		} else {
+		    // Something else is wrong. It may be one of many other states, but all we need
+		    //  to know is we can neither read nor write
+		    mExists = mWrite = false;
+		}
+		
+		if(mExists && mWrite){
+
+			path = Environment.getExternalStorageDirectory() + fileFolder;
+			File root = new File(path);
+			root.mkdirs();
+			File f = new File(root, fileName);
+			if(f.exists()){
+				try{
+					//Read from file and set your boolean onFavorite array accordingly.
+					FileReader reader = new FileReader(f);
+					BufferedReader in = new BufferedReader(reader);
+					String inString = null;
+					Numbers.clear();
+					while((inString = in.readLine()) != null){
+						String nUID, nNumber;
+						nNumber = inString.substring(inString.indexOf(","));
+						nUID = inString.substring(0, inString.indexOf(","));
+						Numbers.put(nUID, nNumber);
+						
+					}
+					reader.close();
+					in.close();
+				}catch(IOException e){
+					e.printStackTrace();
+				}
+			}
+			else{
+				try {
+					f.createNewFile();
+					FileWriter writer = new FileWriter(f);
+					BufferedWriter out = new BufferedWriter(writer);
+					out.close();
+				
+					} catch (IOException e) {
+						Log.e("SDCARD", "Could not write file " + e.getMessage());
+				}
+			}
+		}
+		
+		//End SDCARD init
 	    
 		prefs_ = getSharedPreferences(FILENAME, 0);
 		Globals.uid = prefs_.getString("profileid", "");
@@ -247,7 +324,20 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	
 
 	private void findFriend(){
-		Log.e("Get Number", "get number begin");
+		
+		if(Numbers.containsKey(selectedId)){
+	           String fone = Numbers.get(selectedId);
+
+	            
+	            String requestMessage = makeMessage();
+				numberFromCDialog = fone;
+	            
+	            SmsManager sms = SmsManager.getDefault();
+				sms.sendTextMessage(fone, null, requestMessage, null, null);
+			
+		}
+		else{
+
 		AlertDialog.Builder builder =new AlertDialog.Builder(this);
 		AlertDialog alertDialog = builder.create();
 		
@@ -291,12 +381,41 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 	            SmsManager sms = SmsManager.getDefault();
 				sms.sendTextMessage(fone, null, requestMessage, null, null);
 				
+				//WRITE TO SD CARD
+				
+				String path = Environment.getExternalStorageDirectory() + fileFolder;
+				File root = new File(path);
+				
+				root.mkdirs();
+				
+				try {
+					
+					File f = new File(root, fileName);
+					if(!f.exists())
+					{
+						f.createNewFile();
+						FileWriter out = new FileWriter(f, true);
+                		out.append(selectedId + "," + fone);
+                		out.flush();
+                		out.close();
+                	}
+					else{
+						FileWriter out = new FileWriter(f, true);
+                		out.append(selectedId + "," + fone);
+                		out.flush();
+                		out.close();
+					}
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
+			}
+				
 				//This launch has been moved to the receiver
 				//Intent i = new Intent(PeopleFinderActivity.this, mapFinderActivity.class);
 	        	//startActivity(i);
 	            
-	        } 
-	        }); 
+	        });
+
 		/*builder.setNeutralButton("Find in\ncontacts", new DialogInterface.OnClickListener() { 
 	        public void onClick(DialogInterface dialog, int whichButton) { 
 	        	//startActivity(i_camera);
@@ -333,6 +452,69 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		builder.setView(layout);
 		alertDialog = builder.create();
 		builder.show();
+
+		}
+		
+		/*
+		 * //for (int i=0; i< appFriends.size(); i++){
+			//if(appFriends.get(i).id == currentTag)
+			//{
+					//String temp = appFriends.get(i).phoneNumber;
+					//if(temp == null)
+					//{
+
+						final Dialog dialog = new Dialog(PeopleFinderActivity.this);
+
+						dialog.setContentView(R.layout.customdialog);
+						dialog.setTitle("Phone number not found");
+						dialog.setCancelable(true);
+
+						TextView text = (TextView) dialog.findViewById(R.id.textView1);
+						text.setText("Please enter the phone number of your facebook friend:");
+					
+
+					
+						Button button1 = (Button) dialog.findViewById(R.id.button1);
+						button1.setOnClickListener(new OnClickListener(){
+							public void onClick(View v){
+								EditText edit = (EditText) dialog.findViewById(R.id.txtPhoneNo);
+								String fone = edit.getText().toString();
+								
+								Toast.makeText(getApplicationContext(), fone + "  :is the number I'm requesting ", Toast.LENGTH_SHORT).show();
+								
+								String requestMessage = makeMessage();
+								numberFromCDialog = fone;
+								
+								SmsManager sms = SmsManager.getDefault();
+								sms.sendTextMessage(fone, null, requestMessage, null, null);
+																
+								finish();
+							}
+						});
+					
+						Button button2 = (Button) dialog.findViewById(R.id.button2);
+						button1.setOnClickListener(new OnClickListener(){
+							public void onClick(View v){
+							
+								finish();
+	
+							}
+						});
+					
+						dialog.show();
+
+					//}
+					//else{
+					//	numberFromCDialog = appFriends.get(i).phoneNumber;
+					//}
+
+				
+					return;*/
+			//}
+		//}
+		//numberFromCDialog = "";
+		//return;
+
 	}
 	
 	
