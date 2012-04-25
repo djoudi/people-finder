@@ -131,7 +131,7 @@ public class CompassActivity extends Activity implements SensorEventListener,
 		 */
 		mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		LocationListener mlocListener = this;
-		mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 0,
+		mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0,
 				mlocListener); // checks ofr updates every 30 seconds
 		// end Jake's added onCreate
 

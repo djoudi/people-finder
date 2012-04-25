@@ -357,7 +357,7 @@ public class mapFinderActivity extends MapActivity {
 		
 		public void doInitStuff(){
 			Log.e("Jacob", "running method: doInitStuff");
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, this);
 		}
 		
 		public void onStatusChanged(String provider, int status, Bundle extras) {
