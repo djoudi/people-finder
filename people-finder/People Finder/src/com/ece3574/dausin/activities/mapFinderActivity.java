@@ -51,10 +51,6 @@ import com.facebook.android.Util;
 
 //--------------------------------------------------------------JACOB
 // TODO: 
-// -> 2nd phone has problems with updating the map (details in 
-// logcat). It seems to be that the problem is probably with the 
-// facebook picture for the other phone. Since they haven't selected
-// a person their facebook id thing isn't set...
 // -> Put 2 markers on map (finder and person to be found)
 //--------------------------------------------------------------JACOB
 
@@ -78,10 +74,10 @@ public class mapFinderActivity extends MapActivity {
 	
 	private static final String PROX_ALERT_INTENT = "com.ece3574.dausin.activities.CompassActivity";
 	
-	public static final int MICRO_DEGREE = 100000;
+	public static final int MICRO_DEGREE = 1000000;
 	
-	private static OverlayItem overlayitem;
-	private static TheItemizedOverlay itemizedoverlay;
+	private static OverlayItem overlayitem, overlayitem2;
+	private static TheItemizedOverlay itemizedoverlay, itemizedoverlay2;
 	private static List<Overlay> mapOverlays;
 	
 	DifferentLocationListener locClass;
@@ -121,21 +117,18 @@ public class mapFinderActivity extends MapActivity {
         		catch (Exception e){
         			
         		} catch (FacebookError e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
         	}
         }
         //-------------------------------------------------JACOB
-        //Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
         
-        //--------------------------------------------------JACOB
-        // Checking constructor errors
-        //--------------------------------------------------JACOB
-        itemizedoverlay = new TheItemizedOverlay(drawable, this);
-        //--------------------------------------------------JACOB
+        itemizedoverlay = new TheItemizedOverlay(drawable, this); // Set up for Finder
+        itemizedoverlay2 = new TheItemizedOverlay(drawable, this); // Set up for Findee
+        
         
         GeoPoint point = new GeoPoint(19240000,-99120000);
+        GeoPoint point2 = new GeoPoint(37227578, -80422368);
         overlayitem = new OverlayItem(point, "F YEAH", "AHM IN MESCO BEECH!");
         
         itemizedoverlay.addOverlay(overlayitem);
@@ -143,11 +136,13 @@ public class mapFinderActivity extends MapActivity {
         
         point = new GeoPoint(18230000, -88320000);
         overlayitem = new OverlayItem(point, "LUV ME", "AHM MESCAN");
+        overlayitem2 = new OverlayItem(point2, "DEERTY BEET", "SCYUH MAYH MAH");
         itemizedoverlay.removeOverlay(); // Removes previous marker
         itemizedoverlay.addOverlay(overlayitem);
+        itemizedoverlay2.addOverlay(overlayitem2);
         //itemizedoverlay.removeOverlay();
         mapOverlays.add(itemizedoverlay); // Populates the map with overlays
-        
+        mapOverlays.add(itemizedoverlay2);
         // Handling GPS Stuff
 
     	
@@ -177,12 +172,17 @@ public class mapFinderActivity extends MapActivity {
     // Method to change the markers on the map when the location is 
     // updated by the GPS.
     /*-----------------------------------------------------------JACOB*/
-    public static void changeMapMarkers(GeoPoint coordinates){
+    public static void changeMapMarkers(GeoPoint coordinates, GeoPoint coordinates2){
     	Log.e("Jacob","Entered changeMapMarkers method!");
     	overlayitem = new OverlayItem(coordinates, "Position", "Yeap");
+    	GeoPoint testCoord = new GeoPoint(31503629, -99228516);
+    	overlayitem2 = new OverlayItem(testCoord, "Baby Baby Baby", "Justin");
     	itemizedoverlay.removeOverlay();
     	itemizedoverlay.addOverlay(overlayitem);
+    	itemizedoverlay2.removeOverlay();
+    	itemizedoverlay2.addOverlay(overlayitem2);
     	mapOverlays.add(itemizedoverlay);
+    	mapOverlays.add(itemizedoverlay2);
     }
     /*-----------------------------------------------------------JACOB*/
     
@@ -233,7 +233,17 @@ public class mapFinderActivity extends MapActivity {
 			int lat = (int) (loc.getLatitude() * 1E6);
 			int lng = (int) (loc.getLongitude() * 1E6);
 			GeoPoint point = new GeoPoint(lat, lng);
-			changeMapMarkers(point);
+			
+			//-------------------------------------------------------JACOB
+			// Testing a double picture update
+			// 	-> This code will be updated in the future but right now
+			//	   it's just being used to check double picture updates
+			//-------------------------------------------------------JACOB
+			int lat2 = (int) ((loc.getLatitude() * 1E6) + 100);
+			int lng2 = (int) ((loc.getLongitude() * 1E6) + 100);
+			GeoPoint point2 = new GeoPoint(lat2, lng2);
+			
+			changeMapMarkers(point, point2);
 			
 			//-------------------------------------------------------JACOB
 			// Removing app engine code to make sure that my own code is
