@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.http.HttpResponse;
+import org.json.JSONObject;
 
 import com.ece3574.dausin.R;
 import com.ece3574.dausin.appengine.XMLParser;
@@ -45,14 +46,16 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 import com.ece3574.dausin.async.HttpUtils;
+import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
 
 //--------------------------------------------------------------JACOB
 // TODO: 
 // -> 2nd phone has problems with updating the map (details in 
-// logcat)
+// logcat). It seems to be that the problem is probably with the 
+// facebook picture for the other phone. Since they haven't selected
+// a person their facebook id thing isn't set...
 // -> Put 2 markers on map (finder and person to be found)
-// -> Change marker picture to be facebook picture instead of goofy
-// android thing
 //--------------------------------------------------------------JACOB
 
 public class mapFinderActivity extends MapActivity {
@@ -60,7 +63,8 @@ public class mapFinderActivity extends MapActivity {
 	
 	//Added for Jake's functions
 	private MapView mapView;
-	private Drawable drawable, tDrawable;
+	private Drawable drawable; 
+	private Drawable tDrawable;
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
 	private String putId, theirGPS, theirLat, theirLong;
@@ -104,10 +108,32 @@ public class mapFinderActivity extends MapActivity {
 					e.printStackTrace();
 				}
         	}
+        	else{
+        		// Set picture to your own...
+        		String response = PeopleFinderActivity.getResponseString();
+        		try{
+        		JSONObject json = Util.parseJson(response);
+        		String profileID = json.getString("id");
+        		URL img_value = new URL("http://graph.facebook.com/"+profileID+"/picture?type=square");
+        		String urlString = img_value.toString();
+        		drawable = drawableFromUrl(urlString);
+        		}
+        		catch (Exception e){
+        			
+        		} catch (FacebookError e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
         }
         //-------------------------------------------------JACOB
         //Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
+        
+        //--------------------------------------------------JACOB
+        // Checking constructor errors
+        //--------------------------------------------------JACOB
         itemizedoverlay = new TheItemizedOverlay(drawable, this);
+        //--------------------------------------------------JACOB
         
         GeoPoint point = new GeoPoint(19240000,-99120000);
         overlayitem = new OverlayItem(point, "F YEAH", "AHM IN MESCO BEECH!");
@@ -169,7 +195,7 @@ public class mapFinderActivity extends MapActivity {
     //PeopleActivity.appfriends.get(i).id
     
     //////////////////////////////////////////////////
-    //Get GPS coordinates and send/recieve coordinates
+    //Get GPS coordinates and send/receive coordinates
     //////////////////////////////////////////////////
     
 	public class DifferentLocationListener implements LocationListener {
@@ -208,7 +234,14 @@ public class mapFinderActivity extends MapActivity {
 			int lng = (int) (loc.getLongitude() * 1E6);
 			GeoPoint point = new GeoPoint(lat, lng);
 			changeMapMarkers(point);
-			handler.post(new Runnable() {
+			
+			//-------------------------------------------------------JACOB
+			// Removing app engine code to make sure that my own code is
+			// not causing any errors
+			//-------------------------------------------------------JACOB
+			
+			
+			/*handler.post(new Runnable() {
 				
 				public void run() {
 			
@@ -224,10 +257,10 @@ public class mapFinderActivity extends MapActivity {
 					//Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
 					
 					
-					/*-------------------------------------------------------------------------------*/
-					/* Update picture on Map				 */
-					/*-------------------------------------------------------------------------------*/
-					/*Drawable drawable;
+					//-------------------------------------------------------------------------------
+					// Update picture on Map				 
+					//-------------------------------------------------------------------------------
+					Drawable drawable;
 					try {
 						drawable = drawableFromUrl(PeopleFinderActivity.getPractice());
 				        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, new mapFinderActivity());
@@ -237,7 +270,7 @@ public class mapFinderActivity extends MapActivity {
 				        mapOverlays.add(itemizedoverlay);
 					} catch (IOException e) {
 						e.printStackTrace();
-					}*/
+					}
 					
 					///////////////////////////
 					//PUSHING STRING
@@ -340,7 +373,7 @@ public class mapFinderActivity extends MapActivity {
 					
 					
 				}
-			});
+			});*/
 			
 
 
