@@ -185,7 +185,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					}
 					while((inString = in.readLine()) != null){
 						String nUID, nNumber;
-						nNumber = inString.substring(inString.indexOf(","));
+						nNumber = inString.substring(inString.indexOf(",")+1);
 						nUID = inString.substring(0, inString.indexOf(","));
 						Numbers.put(nUID, nNumber);
 						
@@ -331,7 +331,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		if(Numbers.get(selectedId) != null){
 	           String fone = Numbers.get(selectedId);
 
-	            
+	            makeToast(fone);
 	            String requestMessage = makeMessage();
 				numberFromCDialog = fone;
 	            

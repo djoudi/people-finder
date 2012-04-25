@@ -465,9 +465,9 @@ public class CompassActivity extends Activity implements SensorEventListener,
 								bmpOriginal.getWidth() / 2,
 								bmpOriginal.getHeight() / 2);
 				
-				//tempCanvas.drawBitmap(bmpOriginal, 0, 0, null);
-				//myView.setImageBitmap(bmResult);
-				myView.draw(tempCanvas);
+				tempCanvas.drawBitmap(bmpOriginal, 0, 0, null);
+				myView.setImageBitmap(bmResult);
+				//myView.draw(tempCanvas);
 				prevDegree = degree;
 			}
 		};
