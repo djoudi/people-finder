@@ -51,7 +51,7 @@ import com.facebook.android.Util;
 
 //--------------------------------------------------------------JACOB
 // TODO: 
-// -> Put 2 markers on map (finder and person to be found)
+// -> Integrate markers with app engine
 //--------------------------------------------------------------JACOB
 
 public class mapFinderActivity extends MapActivity {
@@ -229,7 +229,7 @@ public class mapFinderActivity extends MapActivity {
 		
 		//@Override
 		public void onLocationChanged (final Location loc){
-			Log.e("Jacob", "running method: onLocationChanged");
+			Log.d("Jacob", "running method: onLocationChanged");
 			int lat = (int) (loc.getLatitude() * 1E6);
 			int lng = (int) (loc.getLongitude() * 1E6);
 			GeoPoint point = new GeoPoint(lat, lng);
@@ -244,14 +244,8 @@ public class mapFinderActivity extends MapActivity {
 			GeoPoint point2 = new GeoPoint(lat2, lng2);
 			
 			changeMapMarkers(point, point2);
-			
-			//-------------------------------------------------------JACOB
-			// Removing app engine code to make sure that my own code is
-			// not causing any errors
-			//-------------------------------------------------------JACOB
-			
-			
-			/*handler.post(new Runnable() {
+						
+			handler.post(new Runnable() {
 				
 				public void run() {
 			
@@ -266,21 +260,6 @@ public class mapFinderActivity extends MapActivity {
 					coordinates = loc.getLatitude()+"|"+loc.getLongitude(); //creates coordinates string seperated by |
 					//Toast.makeText(getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
 					
-					
-					//-------------------------------------------------------------------------------
-					// Update picture on Map				 
-					//-------------------------------------------------------------------------------
-					Drawable drawable;
-					try {
-						drawable = drawableFromUrl(PeopleFinderActivity.getPractice());
-				        TheItemizedOverlay itemizedoverlay = new TheItemizedOverlay(drawable, new mapFinderActivity());
-				        GeoPoint point = new GeoPoint(newLat, newLng);
-				        OverlayItem overlayitem = new OverlayItem(point, "Yo Homie Dawgs", "I'm somewheres!");
-				        itemizedoverlay.addOverlay(overlayitem);
-				        mapOverlays.add(itemizedoverlay);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 					
 					///////////////////////////
 					//PUSHING STRING
@@ -310,7 +289,7 @@ public class mapFinderActivity extends MapActivity {
 					// PULLING STRING
 					////////////////////////////
 					
-					//the account that we are recieving from should be the facebook in the
+					//the account that we are receiving from should be the facebook in the
 					//PeopleFinderActivity.currentTag string
 					//so then based on
 					//putMap was changed to static in PeopleFinderActivity to access it here.
@@ -335,8 +314,26 @@ public class mapFinderActivity extends MapActivity {
 								theirGPS = ParsedXML.get(putId);
 								int index = theirGPS.indexOf("|");
 								
-								theirLat = theirGPS.substring(0, index);
-								theirLong = theirGPS.substring(index+1, theirGPS.length());
+								//****************************NOTE****************************
+								// When I run this program searching for Jason and send the
+								// phone new coordinates it crashes. After debugging the 
+								// problem seems to be related to there being no available
+								// GPS data for him (my second log doesn't show up at all). So
+								// I'm putting in some code to check the validity of the data
+								// before anything is written...
+								//****************************NOTE****************************
+								Log.d("Jacob", "Following is -index-");
+								Log.d("Jacob", "=" + index);
+								if (index > 1){
+									theirLat = theirGPS.substring(0, index);
+									theirLong = theirGPS.substring(index+1, theirGPS.length());
+								}
+								else {
+									// Aloha bruddah
+									theirLat = "21.309846";
+									theirLong = "-157.862549";
+								}
+								//****************************NOTE****************************
 								
 								yourLat = Double.valueOf(theirLat) * MICRO_DEGREE;
 								yourLong = Double.valueOf(theirLong) * MICRO_DEGREE;
@@ -383,7 +380,7 @@ public class mapFinderActivity extends MapActivity {
 					
 					
 				}
-			});*/
+			});
 			
 
 
