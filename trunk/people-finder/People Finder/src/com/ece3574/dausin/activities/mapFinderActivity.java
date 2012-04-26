@@ -347,7 +347,7 @@ public class mapFinderActivity extends MapActivity {
 								//--------------------------------------------------------------JACOB
 								// Removed updateProximity call to test map Marker movement
 								//--------------------------------------------------------------JACOB
-								//updateProximity(theirLatInt, theirLongInt);
+								updateProximity(theirLatInt, theirLongInt);
 								//--------------------------------------------------------------JACOB
 								
 								//makeToast(response);

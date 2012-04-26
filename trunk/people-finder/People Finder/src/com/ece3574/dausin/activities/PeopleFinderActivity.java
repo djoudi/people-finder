@@ -339,7 +339,7 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 		if(Numbers.get(selectedId) != null){
 	           String fone = Numbers.get(selectedId);
 
-	            makeToast(fone);
+	            //xmakeToast(fone);
 	            String requestMessage = makeMessage();
 				numberFromCDialog = fone;
 	            
@@ -407,13 +407,13 @@ public class PeopleFinderActivity extends Activity implements HttpCallback{
 					{
 						f.createNewFile();
 						FileWriter out = new FileWriter(f, true);
-                		out.append(selectedId + "," + fone);
+                		out.append(selectedId + "," + fone + "\findFriendn");
                 		out.flush();
                 		out.close();
                 	}
 					else{
 						FileWriter out = new FileWriter(f, true);
-                		out.append(selectedId + "," + fone);
+                		out.append(selectedId + "," + fone + "\n");
                 		out.flush();
                 		out.close();
 					}
