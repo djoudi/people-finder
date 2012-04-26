@@ -51,9 +51,15 @@ public class DialogActivity extends Activity {
 		 {
 			 public void onClick(View v){
 			        SmsManager sms = SmsManager.getDefault();
-			        sms.sendTextMessage(str[2], null, "PF:ACCEPT_R", null, null);  
-					Intent i = new Intent(DialogActivity.this, mapFinderActivity.class);
+			        sms.sendTextMessage(str[2], null, "PF:ACCEPT_R", null, null);
+			        
+			        //-----------------------------------------------------------JACOB
+			        // Returning to PeopleFinderActivity instead of mapFinderActivity
+			        // because of facebook photo problems. May reset in the future...
+			        //-----------------------------------------------------------JACOB
+					Intent i = new Intent(DialogActivity.this, PeopleFinderActivity.class);
 		        	startActivity(i);
+		        	//-----------------------------------------------------------JACOB
 			 }
 		 });
 		 ignoring.setText("Ignore");

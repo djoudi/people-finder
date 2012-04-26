@@ -59,7 +59,7 @@ public class mapFinderActivity extends MapActivity {
 	
 	//Added for Jake's functions
 	private MapView mapView;
-	private Drawable drawable; 
+	private Drawable drawable, drawable2; 
 	private Drawable tDrawable;
 	private Handler handler = new Handler();
 	private HashMap<String, String> putMap, ParsedXML;
@@ -100,7 +100,8 @@ public class mapFinderActivity extends MapActivity {
         for(Friend f : PeopleFinderActivity.appFriends){
         	if(f.id == PeopleFinderActivity.currentTag){
         		try {
-					drawable = drawableFromUrl(f.pictureURL);
+					//drawable2 = drawableFromUrl(f.pictureURL+"?type=square");
+        			drawable2 = drawableFromUrl("http://graph.facebook.com/"+f.id+"/picture?type=square");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -114,6 +115,7 @@ public class mapFinderActivity extends MapActivity {
         		URL img_value = new URL("http://graph.facebook.com/"+profileID+"/picture?type=square");
         		String urlString = img_value.toString();
         		drawable = drawableFromUrl(urlString);
+        		//drawable2 = this.getResources().getDrawable(R.drawable.robinh);
         		}
         		catch (Exception e){
         			
@@ -125,7 +127,7 @@ public class mapFinderActivity extends MapActivity {
         //-------------------------------------------------JACOB
         
         itemizedoverlay = new TheItemizedOverlay(drawable, this); // Set up for Finder
-        itemizedoverlay2 = new TheItemizedOverlay(drawable, this); // Set up for Findee
+        itemizedoverlay2 = new TheItemizedOverlay(drawable2, this); // Set up for Findee
         
         
         GeoPoint point = new GeoPoint(19240000,-99120000);
