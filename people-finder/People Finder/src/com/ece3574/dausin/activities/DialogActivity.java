@@ -45,7 +45,7 @@ public class DialogActivity extends Activity {
          request.setText(body);
          
          
-		 Toast.makeText(getApplicationContext(), str[0]+ "\n" + str[1] +"\n" , Toast.LENGTH_LONG).show();
+		// Toast.makeText(getApplicationContext(), str[0]+ "\n" + str[1] +"\n" , Toast.LENGTH_LONG).show();
 		 accepting.setText("Accept");
 		 accepting.setOnClickListener(new View.OnClickListener()
 		 {
