@@ -79,6 +79,7 @@ public class mapFinderActivity extends MapActivity {
 	private static OverlayItem overlayitem, overlayitem2;
 	private static TheItemizedOverlay itemizedoverlay, itemizedoverlay2;
 	private static List<Overlay> mapOverlays;
+	private GeoPoint globPoint1;
 	
 	DifferentLocationListener locClass;
 	
@@ -175,8 +176,8 @@ public class mapFinderActivity extends MapActivity {
     public static void changeMapMarkers(GeoPoint coordinates, GeoPoint coordinates2){
     	Log.e("Jacob","Entered changeMapMarkers method!");
     	overlayitem = new OverlayItem(coordinates, "Position", "Yeap");
-    	GeoPoint testCoord = new GeoPoint(31503629, -99228516);
-    	overlayitem2 = new OverlayItem(testCoord, "Baby Baby Baby", "Justin");
+    	//GeoPoint testCoord = new GeoPoint(31503629, -99228516);
+    	overlayitem2 = new OverlayItem(coordinates2, "Baby Baby Baby", "Justin");
     	itemizedoverlay.removeOverlay();
     	itemizedoverlay.addOverlay(overlayitem);
     	itemizedoverlay2.removeOverlay();
@@ -232,18 +233,18 @@ public class mapFinderActivity extends MapActivity {
 			Log.d("Jacob", "running method: onLocationChanged");
 			int lat = (int) (loc.getLatitude() * 1E6);
 			int lng = (int) (loc.getLongitude() * 1E6);
-			GeoPoint point = new GeoPoint(lat, lng);
+			globPoint1 = new GeoPoint(lat, lng);
 			
 			//-------------------------------------------------------JACOB
 			// Testing a double picture update
 			// 	-> This code will be updated in the future but right now
 			//	   it's just being used to check double picture updates
 			//-------------------------------------------------------JACOB
-			int lat2 = (int) ((loc.getLatitude() * 1E6) + 100);
-			int lng2 = (int) ((loc.getLongitude() * 1E6) + 100);
-			GeoPoint point2 = new GeoPoint(lat2, lng2);
+			//int lat2 = (int) ((loc.getLatitude() * 1E6) + 100);
+			//int lng2 = (int) ((loc.getLongitude() * 1E6) + 100);
+			//GeoPoint point2 = new GeoPoint(lat2, lng2);
 			
-			changeMapMarkers(point, point2);
+			//changeMapMarkers(point, point2);
 						
 			handler.post(new Runnable() {
 				
@@ -315,12 +316,8 @@ public class mapFinderActivity extends MapActivity {
 								int index = theirGPS.indexOf("|");
 								
 								//****************************NOTE****************************
-								// When I run this program searching for Jason and send the
-								// phone new coordinates it crashes. After debugging the 
-								// problem seems to be related to there being no available
-								// GPS data for him (my second log doesn't show up at all). So
-								// I'm putting in some code to check the validity of the data
-								// before anything is written...
+								// Fixed (or at least should be)
+								//	- Jacob
 								//****************************NOTE****************************
 								Log.d("Jacob", "Following is -index-");
 								Log.d("Jacob", "=" + index);
@@ -340,14 +337,10 @@ public class mapFinderActivity extends MapActivity {
 							
 								theirLatInt = (int) yourLat;
 								theirLongInt = (int) yourLong;
-								//MAKE THEIR NEW GEOPOINT HERE.
+								GeoPoint globPoint2 = new GeoPoint(theirLatInt, theirLongInt);
 								
-								//--------------------------------------------------------------JACOB
-								// Making a GeoPoint should be taken care of by the
-								// changeMapMarkers method
-								//--------------------------------------------------------------JACOB
-								//makeGeoPoint(myLatInt, myLongInt, Globals.uid, theirLatInt, theirLongInt, PeopleFinderActivity.currentTag);
-								//--------------------------------------------------------------JACOB
+								//MAKE THEIR NEW GEOPOINT HERE.
+								changeMapMarkers(globPoint1, globPoint2);
 								
 								//--------------------------------------------------------------JACOB
 								// Removed updateProximity call to test map Marker movement
