@@ -1,0 +1,1 @@
+Andriod Application that will allow you to easily locate friends within close proximity of the phone
